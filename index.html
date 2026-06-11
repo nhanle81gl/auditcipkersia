@@ -1450,7 +1450,10 @@ function exportPDF(id){
   doc.setTextColor(255,255,255);
   doc.setFontSize(20); doc.setFont('helvetica','bold');
   doc.text('KERSIA', MARGIN, 16);
-  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.setFontSize(10); doc.text(
+  `CIP per year: ${t.cipYr||'–'} · Supply pump: ${t.supKw||'–'} KWh · Sprayball: ${t.sprayball||'–'}`,
+  MARGIN, y
+);
   doc.text('CIP Audit & TCO Calculator Report', MARGIN, 23);
 
   doc.setFontSize(9);
