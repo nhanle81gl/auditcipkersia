@@ -434,11 +434,11 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
     <div class="stat-grid" id="stat-grid"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
       <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><i class="ti ti-leaf"></i>Tiết kiệm NaOH theo breweries (kg/year)</div>
+        <div class="card-hd"><i class="ti ti-leaf"></i>NaOH saving in breweries (kg/year)</div>
         <div class="chart-wrap"><canvas id="ch-caustic"></canvas></div>
       </div>
       <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><i class="ti ti-droplet"></i>Tiết kiệm nước theo breweries (hl/year)</div>
+        <div class="card-hd"><i class="ti ti-droplet"></i>Water saving in breweries (hl/year)</div>
         <div class="chart-wrap"><canvas id="ch-water"></canvas></div>
       </div>
     </div>
@@ -448,7 +448,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
         <thead><tr>
           <th>Brewery</th><th>Audit date</th><th>Capacity (hl)</th>
           <th>Tank</th><th>NaOH saving (kg/year)</th>
-          <th>TK Water (hl/year)</th><th>Actions</th>
+          <th>Water saving (hl/year)</th><th>Actions</th>
         </tr></thead>
         <tbody id="dash-tbody"></tbody>
       </table>
@@ -592,10 +592,10 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
 ══════════════════════════════════════════════════════════════════ -->
 <script>
 'use strict';
-// ── Hằng số ────────────────────────────────────────────────────────
+// ── constant ────────────────────────────────────────────────────────
 const TANK_TYPES = ["FST","BBT","YRT","YPT","HORAP","DAW","H&T","Other"];
-const CIP_FREQ   = ["Sau khi xả tank","Mỗi mẻ sản xuất","Hàng tuần","Hai tuần/lần","Hàng tháng","Tùy chỉnh"];
-const SPRAYBALL  = ["Cố định (Fixed)","Quay (Rotating)","CIP-O-Mat","Vòi phun (Nozzle)","Other"];
+const CIP_FREQ = ["After tank discharge","After each production batch","Weekly","Biweekly","Monthly","Custom"];
+const SPRAYBALL = ["Fixed","Rotating","CIP-O-Mat","Spray Nozzle","Other"];
 const YES_NO     = ["Yes","No"];
 const RECOVERY   = ["Recovery","No recovery"];
 
@@ -822,7 +822,7 @@ function readForm(){
 
 async function saveAudit(){
   readForm();
-  if(!cur.brewery){ document.getElementById('f-brewery').focus(); toast('Vui lòng nhập tên breweries'); return; }
+  if(!cur.brewery){ document.getElementById('f-brewery').focus(); toast('Please enter the brewery name.'); return; }
   const idx=audits.findIndex(a=>a.id===cur.id);
   if(idx>=0) audits[idx]=cur; else audits.push(cur);
   await persist();
@@ -1273,8 +1273,8 @@ function renderDash(){
     <div class="stat-card"><div class="stat-lbl">Total audits</div><div class="stat-val text-green">${audits.length}</div><div class="stat-unit">breweries</div></div>
     <div class="stat-card"><div class="stat-lbl">Tank CIP</div><div class="stat-val text-blue">${tTk}</div><div class="stat-unit">systems</div></div>
     <div class="stat-card"><div class="stat-lbl">NaOH saving</div><div class="stat-val text-green">${fmtN(tC,0)}</div><div class="stat-unit">kg/year</div></div>
-    <div class="stat-card"><div class="stat-lbl">TK Water</div><div class="stat-val text-blue">${fmtN(tW,0)}</div><div class="stat-unit">hl/year</div></div>
-    <div class="stat-card"><div class="stat-lbl">TK Electricity</div><div class="stat-val" style="color:var(--amber)">${fmtN(tE,0)}</div><div class="stat-unit">KWh/year</div></div>
+    <div class="stat-card"><div class="stat-lbl">Water saving</div><div class="stat-val text-blue">${fmtN(tW,0)}</div><div class="stat-unit">hl/year</div></div>
+    <div class="stat-card"><div class="stat-lbl">Electricity saving</div><div class="stat-val" style="color:var(--amber)">${fmtN(tE,0)}</div><div class="stat-unit">KWh/year</div></div>
     <div class="stat-card"><div class="stat-lbl">Time saving</div><div class="stat-val" style="color:var(--purple)">${fmtN(tT,1)}</div><div class="stat-unit">h/year</div></div>`;
 
   const labels=audits.map(a=>esc(a.brewery||'Audit'));
@@ -1448,9 +1448,9 @@ function exportPDF(id){
   doc.rect(0, 26, W, 12, 'F');
 
   doc.setTextColor(255,255,255);
-  doc.setFontSize(20); doc.setFont('helvetica','bold');
+  doc.setFontSize(20); doc.setFont('Roboto','bold');
   doc.text('KERSIA', MARGIN, 16);
-  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.setFontSize(10); doc.setFont('Roboto','normal');
   doc.text('CIP Audit & TCO Calculator Report', MARGIN, 23);
 
   doc.setFontSize(9);
@@ -1459,11 +1459,11 @@ function exportPDF(id){
   y = 50;
   // Brewery name big
   doc.setTextColor(...GRN);
-  doc.setFontSize(22); doc.setFont('helvetica','bold');
+  doc.setFontSize(22); doc.setFont('Roboto','bold');
   doc.text(a.brewery||'(No name)', MARGIN, y); y+=9;
 
   doc.setTextColor(...GR3);
-  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.setFontSize(10); doc.setFont('Roboto','normal');
   doc.text(`Audit Date: ${a.date||'–'}   ·   Capacity: ${a.capacity||'–'} hl/year   ·   Tank systems: ${a.tanks.length}`, MARGIN, y); y+=10;
 
   // divider
@@ -1490,16 +1490,16 @@ function exportPDF(id){
   ];
   stats.forEach((st,i)=>{
     const sx = MARGIN + i*cols4 + 4;
-    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(...GR3);
+    doc.setFontSize(8); doc.setFont('Roboto','normal'); doc.setTextColor(...GR3);
     doc.text(st[0], sx, y+10);
-    doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(...st[2]);
+    doc.setFontSize(14); doc.setFont('Roboto','bold'); doc.setTextColor(...st[2]);
     doc.text(st[1], sx, y+22);
   });
   y += 48;
 
   // ── Utility Rates ──
   checkY(50);
-  doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(...GRN);
+  doc.setFontSize(11); doc.setFont('Roboto','bold'); doc.setTextColor(...GRN);
   doc.text('Utility Rates', MARGIN, y); y+=2;
   doc.setDrawColor(...GRN); doc.line(MARGIN, y, W-MARGIN, y); y+=4;
 
@@ -1534,12 +1534,12 @@ function exportPDF(id){
     doc.setFillColor(...GRN);
     doc.roundedRect(MARGIN, y, CW, 10, 2, 2, 'F');
     doc.setTextColor(255,255,255);
-    doc.setFontSize(11); doc.setFont('helvetica','bold');
+    doc.setFontSize(11); doc.setFont('Roboto','bold');
     doc.text(`Tank System ${i+1}: ${t.tankType||'–'} (${t.numT||'?'} tanks · ${t.grossV||'?'} hl/tank)`, MARGIN+4, y+7);
     y += 14;
 
     // Tank info row
-    doc.setFontSize(8.5); doc.setFont('helvetica','normal'); doc.setTextColor(...GR3);
+    doc.setFontSize(8.5); doc.setFont('Roboto','normal'); doc.setTextColor(...GR3);
     doc.text(`CIP per year: ${t.cipYr||'–'}   ·   Supply pump: ${t.supKw||'–'} KWh   ·   Sprayball: ${t.sprayball||'–'}`, MARGIN, y);
     y += 7;
 
@@ -1589,10 +1589,10 @@ function exportPDF(id){
   // ── Notes ──
   if(a.notes){
     checkY(20);
-    doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(...GRN);
+    doc.setFontSize(11); doc.setFont('Roboto','bold'); doc.setTextColor(...GRN);
     doc.text('Technical Notes & Observations', MARGIN, y); y+=2;
     doc.setDrawColor(...GRN); doc.line(MARGIN, y, W-MARGIN, y); y+=5;
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(...GR1);
+    doc.setFontSize(9); doc.setFont('Roboto','normal'); doc.setTextColor(...GR1);
     const lines = doc.splitTextToSize(a.notes, CW);
     lines.forEach(ln=>{ checkY(6); doc.text(ln, MARGIN, y); y+=5; });
     y+=4;
