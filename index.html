@@ -594,28 +594,8 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
 'use strict';
 // ── Hằng số ────────────────────────────────────────────────────────
 const TANK_TYPES = ["FST","BBT","YRT","YPT","HORAP","DAW","H&T","Other"];
-const CIP_FREQ = ["After Tank Discharge","Every Batch","Weekly","Biweekly","Monthly","Custom"];
-
-const [cipFreq, setCipFreq] = useState("");
-const [customCipFreq, setCustomCipFreq] = useState("");
-
-<select
-  value={cipFreq}
-  onChange={(e) => setCipFreq(e.target.value)}
->
-  {CIP_FREQ.map(item => (
-    <option key={item} value={item}>{item}</option>
-  ))}
-</select>
-
-{cipFreq === "Custom" && (
-  <input
-    type="text"
-    placeholder="Enter custom frequency"
-    value={customCipFreq}
-    onChange={(e) => setCustomCipFreq(e.target.value)}
-  />
-)}
+```javascript
+const CIP_FREQ = ["After Tank Discharge","Every Batch","Weekly","Biweekly","Monthly","Custom (Enter Value)"];
 const SPRAYBALL  = ["Fixed","Rotating","CIP-O-Mat","Nozzle","Other"];
 const YES_NO     = ["Yes","No"];
 const RECOVERY   = ["Recovery","No recovery"];
