@@ -631,7 +631,7 @@ function calcSav(ct,pt){
 // ══════════════════════════════════════════════════════════════════
 // 🔐 AES-GCM 256-bit Encryption (Web Crypto API)
 // Dữ liệu lưu trong localStorage được mã hóa hoàn toàn.
-// Key được dẫn xuất từ device fingerprint + salt cố định bằng PBKDF2.
+// Key được dẫn xuất từ device fingerprint + salt bằng PBKDF2.
 // ══════════════════════════════════════════════════════════════════
 const CRYPTO = (() => {
   const STORE_KEY = 'kersia_v3_enc';
