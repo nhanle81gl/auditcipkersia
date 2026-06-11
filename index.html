@@ -1079,7 +1079,7 @@ function tankFormHtml(i){
       <div class="tank-badge">T${i+1}</div>
       <div class="tank-hd-info">
         <div class="tank-hd-title" id="tt-${i}">${esc(t.tankType)||'Tank '+(i+1)}</div>
-        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} times CIP/năm</div>
+        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} times CIP/year</div>
       </div>
       <button class="btn btn-dan btn-sm" onclick="removeTank(${i})"><i class="ti ti-trash"></i> Remove</button>
     </div>
@@ -1138,7 +1138,7 @@ function tankFormHtml(i){
       <div class="gc4 mb12">
         <div class="f"><label>Proposed caustic concentration <span class="u">(%w/v)</span></label>
           <input type="number" step="any" id="${T}propCausticConc" value="${esc(t.propCausticConc||'')}" placeholder="0"></div>
-        <div class="f"><label>Nồng độ Proposed acid &amp; disinfectant <span class="u">(%v/v)</span></label>
+        <div class="f"><label>Proposed acid; disinfectant <span class="u">(%v/v)</span></label>
           <input type="number" step="any" id="${T}propAcidDisConc" value="${esc(t.propAcidDisConc||'')}" placeholder="0"></div>
         <div class="f"><label>Proposed disinfectant concentration <span class="u">(%v/v)</span></label>
           <input type="number" step="any" id="${T}propDisConc" value="${esc(t.propDisConc||'')}" placeholder="0"></div>
@@ -1653,7 +1653,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ── Đồng hồ thời gian thực ────────────────────────────────────────
-const DAYS_VI = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'];
+const DAYS_VI = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ year','Thứ sáu','Thứ bảy'];
 const MONTHS_VI = ['tháng 1','tháng 2','tháng 3','tháng 4','tháng 5','tháng 6',
                    'tháng 7','tháng 8','tháng 9','tháng 10','tháng 11','tháng 12'];
 function tickClock(){
