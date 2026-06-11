@@ -2,31 +2,11 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>Kersia CIP Audit</title>
-
-<!-- PWA Meta Tags -->
-<meta name="application-name" content="Kersia CIP">
-<meta name="description" content="Kersia Vietnam – CIP Audit & TCO Calculator">
-<meta name="theme-color" content="#0F6E56">
-<meta name="mobile-web-app-capable" content="yes">
-
-<!-- Apple / iPhone specific -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Kersia CIP">
-<link rel="apple-touch-icon" href="data:image/png;base64,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">
-
-<!-- Splash screens for iPhone (optional but nice) -->
-<meta name="apple-touch-fullscreen" content="yes">
-
-<!-- Manifest (inline as data URI) -->
-<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Kersia+CIP+Audit%22%2C%22short_name%22%3A%22Kersia+CIP%22%2C%22description%22%3A%22CIP+Audit+%26+TCO+Calculator%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23094d3c%22%2C%22theme_color%22%3A%220F6E56%22%2C%22orientation%22%3A%22portrait%22%7D">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Kersia – CIP Audit &amp; TCO Calculator</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <style>
 /* ╔══════════════════════════════════════════════════════════════════╗
    ║  RESET & TOKENS                                                  ║
@@ -64,7 +44,7 @@ html,body{background:var(--bg);font-family:var(--font);color:var(--gray-1);font-
 /* Top bar */
 .topbar{
   background:linear-gradient(135deg,var(--green-dk) 0%,var(--green) 55%,var(--green2) 100%);
-  height:64px;padding:0 28px;padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right));padding-top:env(safe-area-inset-top);height:calc(64px + env(safe-area-inset-top));
+  height:64px;padding:0 28px;
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:200;
   box-shadow:0 2px 10px rgba(0,0,0,.20);
@@ -102,7 +82,7 @@ html,body{background:var(--bg);font-family:var(--font);color:var(--gray-1);font-
 @keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
 footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
-  padding:10px 28px;display:flex;justify-content:space-between;margin-top:auto;padding-bottom:max(10px,env(safe-area-inset-bottom))}
+  padding:10px 28px;display:flex;justify-content:space-between;margin-top:auto}
 
 /* ╔══════════════════════════════════════════════════════════════════╗
    ║  CARD                                                            ║
@@ -434,22 +414,12 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
     <div class="stat-grid" id="stat-grid"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
       <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><i class="ti ti-leaf"></i>NaOH saving in breweries (kg/year)</div>
+        <div class="card-hd"><i class="ti ti-leaf"></i>Tiết kiệm NaOH theo breweries (kg/year)</div>
         <div class="chart-wrap"><canvas id="ch-caustic"></canvas></div>
       </div>
       <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><i class="ti ti-droplet"></i>Water saving in breweries (hl/year)</div>
+        <div class="card-hd"><i class="ti ti-droplet"></i>Tiết kiệm nước theo breweries (hl/year)</div>
         <div class="chart-wrap"><canvas id="ch-water"></canvas></div>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
-      <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><i class="ti ti-flask"></i>Acid saving in breweries (kg/year)</div>
-        <div class="chart-wrap"><canvas id="ch-acid"></canvas></div>
-      </div>
-      <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><i class="ti ti-shield-check"></i>Disinfectant saving in breweries (kg/year)</div>
-        <div class="chart-wrap"><canvas id="ch-dis"></canvas></div>
       </div>
     </div>
     <div class="card">
@@ -457,12 +427,13 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
       <table class="tbl">
         <thead><tr>
           <th>Brewery</th><th>Audit date</th><th>Capacity (hl)</th>
-          <th>Tanks</th><th>NaOH saving (kg/year)</th>
-          <th>Water saving (hl/year)</th><th>Actions</th>
+          <th>Tank</th><th>NaOH saving (kg/year)</th>
+          <th>TK Water (hl/year)</th><th>Actions</th>
         </tr></thead>
         <tbody id="dash-tbody"></tbody>
       </table>
     </div>
+  </div>
 </div>
 
 <!-- ══ PAGE: LỊCH SỬ ════════════════════════════════════════════════ -->
@@ -475,7 +446,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
   </div>
   <div id="list-empty" class="card empty" style="display:none">
     <i class="ti ti-file-off"></i><h3>No audits yet</h3>
-    <p>Click "New Audit" to get started.</p>
+    <p>Nhấn "New Audit" để bắt đầu.</p>
   </div>
   <div id="list-cards"></div>
 </div>
@@ -591,7 +562,10 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
   <div id="view-body"></div>
 </div>
 
-
+<footer>
+  <span>Kersia Vietnam – CIP Audit &amp; TCO Calculator v2.1</span>
+  <span>NaOH · ATR B (Acid) · SOPUROXID 15 (Disinfectant)</span>
+</footer>
 </div>
 
 <div id="toast"><i class="ti ti-check"></i><span id="toast-msg"></span></div>
@@ -603,16 +577,16 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
 'use strict';
 // ── Hằng số ────────────────────────────────────────────────────────
 const TANK_TYPES = ["FST","BBT","YRT","YPT","HORAP","DAW","H&T","Other"];
-const CIP_FREQ   = ["After Tank Discharge","Every Batch","Weekly","Biweekly","Monthly","Custom"];
+const CIP_FREQ   = ["Sau khi xả tank","Mỗi mẻ sản xuất","Hàng tuần","Hai tuần/lần","Hàng tháng","Tùy chỉnh"];
 const SPRAYBALL  = ["Cố định (Fixed)","Quay (Rotating)","CIP-O-Mat","Vòi phun (Nozzle)","Other"];
 const YES_NO     = ["Yes","No"];
 const RECOVERY   = ["Recovery","No recovery"];
 
 // ── State ──────────────────────────────────────────────────────────
-let audits = [];
+let audits = JSON.parse(localStorage.getItem('kersia_v3')||'[]');
 let cur = null;   // audit đang chỉnh sửa
 let viewA = null; // audit đang xem
-let chC=null, chW=null, chA=null, chD=null; // chart instances
+let chC=null, chW=null; // chart instances
 
 // ── Helpers ────────────────────────────────────────────────────────
 const nv = v => parseFloat(v)||0;
@@ -637,149 +611,7 @@ function calcSav(ct,pt){
   };
 }
 
-// Tính tổng tiết kiệm chi phí EUR/năm từ các rates và savings
-function calcCostSaving(a){
-  const rW  = nv(a.rWater);   // EUR/m³  (1 hl = 0.1 m³)
-  const rE  = nv(a.rEle);     // EUR/kWh
-  const rC32= nv(a.rC32);     // EUR/kg caustic 32%
-  const rAcid=nv(a.rAcid);    // EUR/kg acid
-  const rDis =nv(a.rDis);     // EUR/kg disinfectant
-
-  let costCaustic=0, costAcid=0, costDis=0, costWater=0, costEnergy=0;
-  a.tanks.forEach(t=>{
-    const sv=calcSav(t.cTot,t.pTot);
-    const yr=nv(t.cipYr);
-    costCaustic += sv.caustic * yr * rC32;
-    costAcid    += sv.acid    * yr * rAcid;
-    costDis     += sv.dis     * yr * rDis;
-    costWater   += sv.water   * yr * 0.1 * rW;  // hl→m³
-    costEnergy  += sv.energy  * yr * rE;
-  });
-  const total = costCaustic + costAcid + costDis + costWater + costEnergy;
-  const exRate= nv(a.exchange);
-  const cur   = a.currency||'EUR';
-  const totalLocal = exRate>0 ? total*exRate : null;
-  return { costCaustic, costAcid, costDis, costWater, costEnergy, total, totalLocal, cur, exRate };
-}
-
-// ══════════════════════════════════════════════════════════════════
-// 🔐 AES-GCM 256-bit Encryption (Web Crypto API)
-// Dữ liệu lưu trong localStorage được mã hóa hoàn toàn.
-// Key được dẫn xuất từ device fingerprint + salt cố định bằng PBKDF2.
-// ══════════════════════════════════════════════════════════════════
-const CRYPTO = (() => {
-  const STORE_KEY = 'kersia_v3_enc';
-  const SALT_KEY  = 'kersia_salt';
-  const ENC = new TextEncoder();
-  const DEC = new TextDecoder();
-
-  // Tạo hoặc lấy salt ngẫu nhiên (lưu riêng dạng plain — không nhạy cảm)
-  function getSalt() {
-    let s = localStorage.getItem(SALT_KEY);
-    if (!s) {
-      const arr = crypto.getRandomValues(new Uint8Array(16));
-      s = btoa(String.fromCharCode(...arr));
-      localStorage.setItem(SALT_KEY, s);
-    }
-    return Uint8Array.from(atob(s), c => c.charCodeAt(0));
-  }
-
-  // Device fingerprint — không cần đăng nhập, key gắn với thiết bị/browser
-  function getDeviceSecret() {
-    const parts = [
-      navigator.userAgent,
-      navigator.language,
-      screen.colorDepth,
-      new Date().getTimezoneOffset(),
-      'kersia-cip-2025'  // app secret
-    ];
-    return parts.join('|');
-  }
-
-  // Dẫn xuất CryptoKey từ device secret bằng PBKDF2
-  async function deriveKey() {
-    const secret = ENC.encode(getDeviceSecret());
-    const salt   = getSalt();
-    const baseKey = await crypto.subtle.importKey(
-      'raw', secret, 'PBKDF2', false, ['deriveKey']
-    );
-    return crypto.subtle.deriveKey(
-      { name: 'PBKDF2', salt, iterations: 200000, hash: 'SHA-256' },
-      baseKey,
-      { name: 'AES-GCM', length: 256 },
-      false,
-      ['encrypt', 'decrypt']
-    );
-  }
-
-  // Mã hóa plaintext → base64 ciphertext (IV + ciphertext)
-  async function encrypt(plaintext) {
-    const key = await deriveKey();
-    const iv  = crypto.getRandomValues(new Uint8Array(12));
-    const ct  = await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv },
-      key,
-      ENC.encode(plaintext)
-    );
-    // Gộp IV (12 bytes) + ciphertext rồi encode base64
-    const combined = new Uint8Array(iv.byteLength + ct.byteLength);
-    combined.set(iv, 0);
-    combined.set(new Uint8Array(ct), iv.byteLength);
-    return btoa(String.fromCharCode(...combined));
-  }
-
-  // Giải mã base64 ciphertext → plaintext
-  async function decrypt(b64) {
-    try {
-      const key  = await deriveKey();
-      const data = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-      const iv   = data.slice(0, 12);
-      const ct   = data.slice(12);
-      const pt   = await crypto.subtle.decrypt(
-        { name: 'AES-GCM', iv },
-        key,
-        ct
-      );
-      return DEC.decode(pt);
-    } catch(e) {
-      console.warn('Decryption failed — data may be corrupted or from another device');
-      return null;
-    }
-  }
-
-  // Lưu audits đã mã hóa
-  async function save(data) {
-    const cipher = await encrypt(JSON.stringify(data));
-    localStorage.setItem(STORE_KEY, cipher);
-  }
-
-  // Tải và giải mã audits
-  async function load() {
-    // Migrate: nếu còn dữ liệu cũ dạng plain text thì mã hóa luôn
-    const legacy = localStorage.getItem('kersia_v3');
-    if (legacy) {
-      try {
-        const parsed = JSON.parse(legacy);
-        await save(parsed);
-        localStorage.removeItem('kersia_v3');
-        console.info('🔐 Migrated legacy data to encrypted storage');
-        return parsed;
-      } catch(e) {}
-    }
-
-    const cipher = localStorage.getItem(STORE_KEY);
-    if (!cipher) return [];
-    const plain = await decrypt(cipher);
-    if (!plain) return [];
-    try { return JSON.parse(plain); } catch(e) { return []; }
-  }
-
-  return { save, load };
-})();
-
-async function persist() {
-  await CRYPTO.save(audits);
-}
+function persist(){ localStorage.setItem('kersia_v3',JSON.stringify(audits)); }
 
 function toast(msg){
   const t=document.getElementById('toast');
@@ -854,20 +686,20 @@ function readForm(){
   cur.tanks.forEach((_,i)=>readTank(i));
 }
 
-async function saveAudit(){
+function saveAudit(){
   readForm();
-  if(!cur.brewery){ document.getElementById('f-brewery').focus(); toast('Please enter brewery name'); return; }
+  if(!cur.brewery){ document.getElementById('f-brewery').focus(); toast('Vui lòng nhập tên breweries'); return; }
   const idx=audits.findIndex(a=>a.id===cur.id);
   if(idx>=0) audits[idx]=cur; else audits.push(cur);
-  await persist();
+  persist();
   toast('Audit saved successfully!');
   cur=null; goTab('list');
 }
 
-async function deleteAudit(id){
+function deleteAudit(id){
   if(!confirm('Confirm delete this audit?')) return;
   audits=audits.filter(a=>a.id!==id);
-  await persist(); renderList(); renderDash(); toast('Audit deleted');
+  persist(); renderList(); renderDash(); toast('Audit deleted');
 }
 
 function viewAuditFn(id){
@@ -993,7 +825,7 @@ function cipHtml(i, mode){
          f('1.1 Step time','wp1t',d.wp1t,'min'),
          f('1.1 Flow rate','wp1f',d.wp1f,'hl/h'),
          f('1.1 Step volume','wp1v',d.wp1v,'hl'))}
-    ${f4(f('1.2 Rinsing intervals','wp2i',d.wp2i,'times'),
+    ${f4(f('1.2 Rinsing intervals','wp2i',d.wp2i,'lần'),
          f('1.2 Step time','wp2t',d.wp2t,'min'),
          f('1.2 Flow rate','wp2f',d.wp2f,'hl/h'),
          f('1.2 Step volume','wp2v',d.wp2v,'hl'))}
@@ -1010,7 +842,7 @@ function cipHtml(i, mode){
          f('Flow rate','cp2f',d.cp2f,'hl/h'),
          f('Step volume','cp2v',d.cp2v,'hl'),EMPTY)}
     ${sub('2.3 Caustic circulation rinsing')}
-    ${f4(f('Circulation intervals','cp3i',d.cp3i,'times'),
+    ${f4(f('Circulation intervals','cp3i',d.cp3i,'lần'),
          f('Step time','cp3t',d.cp3t,'min'),
          f('Flow rate','cp3f',d.cp3f,'hl/h'),
          f('Step volume','cp3v',d.cp3v,'hl'))}
@@ -1034,7 +866,7 @@ function cipHtml(i, mode){
          f('Flow rate','iw1f',d.iw1f,'hl/h'),
          f('Step volume','iw1v',d.iw1v,'hl'),EMPTY)}
     ${sub('2b.2 Water rinsing')}
-    ${f4(f('Rinsing intervals','iw2i',d.iw2i,'times'),
+    ${f4(f('Rinsing intervals','iw2i',d.iw2i,'lần'),
          f('Step time','iw2t',d.iw2t,'min'),
          f('Flow rate','iw2f',d.iw2f,'hl/h'),
          f('Step volume','iw2v',d.iw2v,'hl'))}
@@ -1053,7 +885,7 @@ function cipHtml(i, mode){
     ${f4(f('Step time','ap2t',d.ap2t,'min'),
          f('Flow rate','ap2f',d.ap2f,'hl/h'),EMPTY,EMPTY)}
     ${sub('3.3 Acid circulation rinsing')}
-    ${f4(f('Circulation intervals','ap3i',d.ap3i,'times'),
+    ${f4(f('Circulation intervals','ap3i',d.ap3i,'lần'),
          f('Step time','ap3t',d.ap3t,'min'),
          f('Flow rate','ap3f',d.ap3f,'hl/h'),
          f('Rest time','ap3r',d.ap3r,'min'))}
@@ -1066,7 +898,7 @@ function cipHtml(i, mode){
     ${f4(f('4.1 Step time','iw3t',d.iw3t,'min'),
          f('4.1 Flow rate','iw3f',d.iw3f,'hl/h'),
          f('4.1 Step volume','iw3v',d.iw3v,'hl'),EMPTY)}
-    ${f4(f('4.2 Rinsing intervals','iw4i',d.iw4i,'times'),
+    ${f4(f('4.2 Rinsing intervals','iw4i',d.iw4i,'lần'),
          f('4.2 Step time','iw4t',d.iw4t,'min'),
          f('4.2 Flow rate','iw4f',d.iw4f,'hl/h'),
          f('4.2 Step volume','iw4v',d.iw4v,'hl'))}
@@ -1083,7 +915,7 @@ function cipHtml(i, mode){
          f('Flow rate','dp1f',d.dp1f,'hl/h'),
          f('Step volume','dp1v',d.dp1v,'hl'),EMPTY)}
     ${sub('5.2 Disinfectant circulation')}
-    ${f4(f('Circulation intervals','dp2i',d.dp2i,'times'),
+    ${f4(f('Circulation intervals','dp2i',d.dp2i,'lần'),
          f('Step time','dp2t',d.dp2t,'min'),
          f('Flow rate','dp2f',d.dp2f,'hl/h'),
          f('Step volume','dp2v',d.dp2v,'hl'))}
@@ -1096,7 +928,7 @@ function cipHtml(i, mode){
     ${f4(f('6.1 Step time','fw1t',d.fw1t,'min'),
          f('6.1 Flow rate','fw1f',d.fw1f,'hl/h'),
          f('6.1 Step volume','fw1v',d.fw1v,'hl'),EMPTY)}
-    ${f4(f('6.2 Rinsing intervals','fw2i',d.fw2i,'times'),
+    ${f4(f('6.2 Rinsing intervals','fw2i',d.fw2i,'lần'),
          f('6.2 Step time','fw2t',d.fw2t,'min'),
          f('6.2 Flow rate','fw2f',d.fw2f,'hl/h'),
          f('6.2 Step volume','fw2v',d.fw2v,'hl'))}
@@ -1113,7 +945,7 @@ function tankFormHtml(i){
       <div class="tank-badge">T${i+1}</div>
       <div class="tank-hd-info">
         <div class="tank-hd-title" id="tt-${i}">${esc(t.tankType)||'Tank '+(i+1)}</div>
-        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} CIP/year</div>
+        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} lần CIP/năm</div>
       </div>
       <button class="btn btn-dan btn-sm" onclick="removeTank(${i})"><i class="ti ti-trash"></i> Remove</button>
     </div>
@@ -1261,25 +1093,12 @@ function renderList(){
     return `<div class="chip"><span class="text-gray">${lbl}:</span>
       <span class="${cls}">${ar}${Math.abs(v).toFixed(1)} ${u}</span></div>`;
   };
-  const chipCost=(cs)=>{
-    if(!cs.total && cs.total!==0) return '';
-    const fmt=v=>Math.abs(v)>=1000?Math.round(Math.abs(v)).toLocaleString():Math.abs(v).toFixed(0);
-    const cls=cs.total>0?'sv-pos':cs.total<0?'sv-neg':'sv-zero';
-    const ar=cs.total>0?'▼ ':cs.total<0?'▲ ':'';
-    let txt=`${ar}EUR ${fmt(cs.total)}/year`;
-    if(cs.totalLocal!==null) txt+=` ≈ ${cs.cur} ${fmt(cs.totalLocal)}/year`;
-    return `<div class="chip" style="background:var(--green-lt);border-color:var(--green)">
-      <i class="ti ti-coin" style="color:var(--green)"></i>
-      <span class="text-gray">Cost saving:</span>
-      <span class="${cls}" style="font-size:15px">${txt}</span></div>`;
-  };
 
   cards.innerHTML=audits.slice().reverse().map(a=>{
     const c=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0);
     const w=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water  *nv(t.cipYr),0);
     const e=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy *nv(t.cipYr),0);
     const tm=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).time  *nv(t.cipYr),0);
-    const cs=calcCostSaving(a);
     return `<div class="card">
       <div class="row-bw mb8">
         <div>
@@ -1290,7 +1109,6 @@ function renderList(){
         </div>
         <div class="row-g">
           <button class="btn btn-blu btn-sm" onclick="viewAuditFn(${a.id})"><i class="ti ti-eye"></i> View</button>
-          <button class="btn btn-pri btn-sm" onclick="exportPDF(${a.id})"><i class="ti ti-file-type-pdf"></i> PDF</button>
           <button class="btn btn-sec btn-sm" onclick="editAudit(${a.id})"><i class="ti ti-edit"></i> Edit</button>
           <button class="btn btn-dan btn-sm" onclick="deleteAudit(${a.id})"><i class="ti ti-trash"></i></button>
         </div>
@@ -1298,7 +1116,6 @@ function renderList(){
       <div class="sav-strip">
         ${chip('NaOH',c,'kg/year')}${chip('Water',w,'hl/year')}
         ${chip('Electricity',e,'KWh/year')}${chip('Time',tm,'h/year')}
-        ${chipCost(cs)}
       </div>
     </div>`;
   }).join('');
@@ -1319,41 +1136,34 @@ function renderDash(){
 
   document.getElementById('stat-grid').innerHTML=`
     <div class="stat-card"><div class="stat-lbl">Total audits</div><div class="stat-val text-green">${audits.length}</div><div class="stat-unit">breweries</div></div>
-    <div class="stat-card"><div class="stat-lbl">Tank systems</div><div class="stat-val text-blue">${tTk}</div><div class="stat-unit">systems</div></div>
+    <div class="stat-card"><div class="stat-lbl">Tank CIP</div><div class="stat-val text-blue">${tTk}</div><div class="stat-unit">systems</div></div>
     <div class="stat-card"><div class="stat-lbl">NaOH saving</div><div class="stat-val text-green">${fmtN(tC,0)}</div><div class="stat-unit">kg/year</div></div>
-    <div class="stat-card"><div class="stat-lbl">Water saving</div><div class="stat-val text-blue">${fmtN(tW,0)}</div><div class="stat-unit">hl/year</div></div>
-    <div class="stat-card"><div class="stat-lbl">Electricity saving</div><div class="stat-val" style="color:var(--amber)">${fmtN(tE,0)}</div><div class="stat-unit">KWh/year</div></div>
+    <div class="stat-card"><div class="stat-lbl">TK Water</div><div class="stat-val text-blue">${fmtN(tW,0)}</div><div class="stat-unit">hl/year</div></div>
+    <div class="stat-card"><div class="stat-lbl">TK Electricity</div><div class="stat-val" style="color:var(--amber)">${fmtN(tE,0)}</div><div class="stat-unit">KWh/year</div></div>
     <div class="stat-card"><div class="stat-lbl">Time saving</div><div class="stat-val" style="color:var(--purple)">${fmtN(tT,1)}</div><div class="stat-unit">h/year</div></div>`;
 
-  const labels=audits.map(a=>String(a.brewery||'Audit'));
+  const labels=audits.map(a=>esc(a.brewery||'Audit'));
   const dC=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0));
   const dW=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water  *nv(t.cipYr),0));
-  const dA=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).acid   *nv(t.cipYr),0));
-  const dD=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).dis    *nv(t.cipYr),0));
 
-  const chartOpts=(color,label)=>({
+  if(chC) chC.destroy();
+  if(chW) chW.destroy();
+  chC=new Chart(document.getElementById('ch-caustic'),{
     type:'bar',
-    data:{labels,datasets:[{label,data:null,
-      backgroundColor:color+'b3',borderColor:color,borderWidth:1.5,borderRadius:5}]},
+    data:{labels,datasets:[{label:'NaOH (kg/year)',data:dC,
+      backgroundColor:'rgba(15,110,86,.72)',borderColor:'#0F6E56',borderWidth:1.5,borderRadius:5}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false}},
       scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}
   });
-
-  if(chC) chC.destroy();
-  if(chW) chW.destroy();
-  if(chA) chA.destroy();
-  if(chD) chD.destroy();
-
-  const optC=chartOpts('#0F6E56','NaOH (kg/year)');   optC.data.datasets[0].data=dC;
-  const optW=chartOpts('#1A6FBF','Water (hl/year)');   optW.data.datasets[0].data=dW;
-  const optA=chartOpts('#D97706','Acid (kg/year)');    optA.data.datasets[0].data=dA;
-  const optDis=chartOpts('#7C3AED','Disinfectant (kg/year)'); optDis.data.datasets[0].data=dD;
-
-  chC  = new Chart(document.getElementById('ch-caustic'), optC);
-  chW  = new Chart(document.getElementById('ch-water'),   optW);
-  chA  = new Chart(document.getElementById('ch-acid'),    optA);
-  chD  = new Chart(document.getElementById('ch-dis'),     optDis);
+  chW=new Chart(document.getElementById('ch-water'),{
+    type:'bar',
+    data:{labels,datasets:[{label:'Water (hl/year)',data:dW,
+      backgroundColor:'rgba(26,111,191,.70)',borderColor:'#1A6FBF',borderWidth:1.5,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}
+  });
 
   document.getElementById('dash-tbody').innerHTML=audits.slice().reverse().map(a=>{
     const c=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0);
@@ -1384,97 +1194,20 @@ function renderView(){
     ${u?`<div class="kv-u">${u}</div>`:''}
   </div>`;
 
-  // Cost saving calculation
-  const cs=calcCostSaving(a);
-  const fmtEUR=v=>v===0?'–':(v>0?'▼ ':'▲ ')+'EUR '+Math.abs(v).toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})+'/year';
-  const fmtLoc=v=>{
-    if(cs.exRate<=0||v===0) return '–';
-    const loc=v*cs.exRate;
-    return (v>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(loc).toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})+'/year';
-  };
-  const colCost=v=>v>0?'var(--green)':v<0?'var(--red)':'var(--gray-3)';
-  const hasRates=(nv(a.rWater)||nv(a.rEle)||nv(a.rC32)||nv(a.rAcid)||nv(a.rDis));
-  const showLocal=cs.exRate>0&&cs.cur!=='EUR';
-
-  const costTableHtml=hasRates?`
-  <div class="card" style="border:2px solid var(--green)">
-    <div class="card-hd" style="font-size:14px"><i class="ti ti-coins"></i>Cost Savings (EUR/year)</div>
-    <table class="tbl">
-      <thead><tr>
-        <th>Item</th>
-        <th style="text-align:right">Unit rate</th>
-        <th style="text-align:right">Saving/year</th>
-        <th style="text-align:right">Cost saving EUR/year</th>
-        ${showLocal?`<th style="text-align:right">Cost saving ${esc(cs.cur)}/year</th>`:''}
-      </tr></thead>
-      <tbody>
-        <tr>
-          <td class="fw7">Caustic 32%</td>
-          <td style="text-align:right">${nv(a.rC32)?'EUR '+nv(a.rC32)+' /kg':'–'}</td>
-          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0),1)} kg</td>
-          <td style="text-align:right;font-weight:700;color:${colCost(cs.costCaustic)}">${fmtEUR(cs.costCaustic)}</td>
-          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costCaustic)}">${fmtLoc(cs.costCaustic)}</td>`:''}
-        </tr>
-        <tr>
-          <td class="fw7">Acid</td>
-          <td style="text-align:right">${nv(a.rAcid)?'EUR '+nv(a.rAcid)+' /kg':'–'}</td>
-          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).acid*nv(t.cipYr),0),1)} kg</td>
-          <td style="text-align:right;font-weight:700;color:${colCost(cs.costAcid)}">${fmtEUR(cs.costAcid)}</td>
-          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costAcid)}">${fmtLoc(cs.costAcid)}</td>`:''}
-        </tr>
-        <tr>
-          <td class="fw7">Disinfectant</td>
-          <td style="text-align:right">${nv(a.rDis)?'EUR '+nv(a.rDis)+' /kg':'–'}</td>
-          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).dis*nv(t.cipYr),0),1)} kg</td>
-          <td style="text-align:right;font-weight:700;color:${colCost(cs.costDis)}">${fmtEUR(cs.costDis)}</td>
-          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costDis)}">${fmtLoc(cs.costDis)}</td>`:''}
-        </tr>
-        <tr>
-          <td class="fw7">Water</td>
-          <td style="text-align:right">${nv(a.rWater)?'EUR '+nv(a.rWater)+' /m³':'–'}</td>
-          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water*nv(t.cipYr),0),1)} hl</td>
-          <td style="text-align:right;font-weight:700;color:${colCost(cs.costWater)}">${fmtEUR(cs.costWater)}</td>
-          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costWater)}">${fmtLoc(cs.costWater)}</td>`:''}
-        </tr>
-        <tr>
-          <td class="fw7">Electricity</td>
-          <td style="text-align:right">${nv(a.rEle)?'EUR '+nv(a.rEle)+' /kWh':'–'}</td>
-          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy*nv(t.cipYr),0),1)} kWh</td>
-          <td style="text-align:right;font-weight:700;color:${colCost(cs.costEnergy)}">${fmtEUR(cs.costEnergy)}</td>
-          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costEnergy)}">${fmtLoc(cs.costEnergy)}</td>`:''}
-        </tr>
-        <tr style="background:var(--green-lt)">
-          <td class="fw7" colspan="3" style="font-size:15px;color:var(--green)">TOTAL COST SAVING / YEAR</td>
-          <td style="text-align:right;font-size:17px;font-weight:800;color:${colCost(cs.total)}">${fmtEUR(cs.total)}</td>
-          ${showLocal?`<td style="text-align:right;font-size:17px;font-weight:800;color:${colCost(cs.total)}">${fmtLoc(cs.total)}</td>`:''}
-        </tr>
-      </tbody>
-    </table>
-    ${showLocal?`<div style="font-size:12px;color:var(--gray-3);margin-top:8px">
-      Exchange rate: 1 EUR = ${cs.exRate.toLocaleString()} ${cs.cur}</div>`:''}
-  </div>`:'';
-
   const tankHtml=a.tanks.map((t,i)=>{
     const sv=calcSav(t.cTot,t.pTot);
     const yr=k=>(sv[k]*nv(t.cipYr)).toFixed(1);
-    // per-tank cost row
-    const costRow=(lbl,ck,unit,rate,rUnit)=>{
+    const row=(lbl,ck,unit)=>{
       const cv=nv(t.cTot[ck]),pv=nv(t.pTot[ck]),d=cv-pv;
       const yv=parseFloat(yr(ck));
       const col=d>0?'var(--green)':d<0?'var(--red)':'var(--gray-3)';
       const colY=yv>0?'var(--green)':yv<0?'var(--red)':'var(--gray-3)';
-      // cost: water: hl→m³ ×0.1; others direct
-      const convF=ck==='water'?0.1:1;
-      const costYr=rate? yv*convF*rate : null;
-      const colC=costYr>0?'var(--green)':costYr<0?'var(--red)':'var(--gray-3)';
       return `<tr>
         <td class="fw7">${lbl}</td>
         <td style="text-align:right;color:var(--blue);font-weight:600">${fmtN(cv,2)} ${unit}</td>
         <td style="text-align:right;color:var(--green);font-weight:600">${fmtN(pv,2)} ${unit}</td>
         <td style="text-align:right;font-weight:700;color:${col}">${d>0?'▼ ':d<0?'▲ ':''}${Math.abs(d).toFixed(2)} ${unit}</td>
         <td style="text-align:right;font-weight:700;color:${colY}">${yv>0?'▼ ':yv<0?'▲ ':''}${Math.abs(yv)} ${unit}</td>
-        <td style="text-align:right;font-weight:700;color:${costYr!==null?colC:'var(--gray-4)'}">
-          ${costYr!==null&&costYr!==0?(costYr>0?'▼ ':'▲ ')+'EUR '+Math.abs(costYr).toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0}):'–'}</td>
       </tr>`;
     };
     return `<div class="card">
@@ -1492,15 +1225,14 @@ function renderView(){
           <th style="text-align:right">Kersia proposal / CIP</th>
           <th style="text-align:right">Saving / CIP</th>
           <th style="text-align:right">Saving / year</th>
-          <th style="text-align:right">Cost saving EUR/year</th>
         </tr></thead>
         <tbody>
-          ${costRow('Caustic 32% (kg)','caustic','kg',nv(a.rC32),'kg')}
-          ${costRow('Acid (kg)','acid','kg',nv(a.rAcid),'kg')}
-          ${costRow('Disinfectant (kg)','dis','kg',nv(a.rDis),'kg')}
-          ${costRow('Water (hl)','water','hl',nv(a.rWater),'m³')}
-          ${costRow('Time (h)','time','h',0,'')}
-          ${costRow('Electricity (KWh)','energy','KWh',nv(a.rEle),'kWh')}
+          ${row('Caustic 32% (kg)','caustic','kg')}
+          ${row('Acid (kg)','acid','kg')}
+          ${row('Disinfectant (kg)','dis','kg')}
+          ${row('Water (hl)','water','hl')}
+          ${row('Time (h)','time','h')}
+          ${row('Electricity năng (KWh)','energy','KWh')}
         </tbody>
       </table>
     </div>`;
@@ -1513,27 +1245,23 @@ function renderView(){
         <div style="font-size:13px;color:var(--gray-3)">Audit date: ${esc(a.date||'–')} &nbsp;·&nbsp; Capacity: ${esc(a.capacity||'–')} hl/year</div>
       </div>
       <div class="row-g">
-        <button class="btn btn-pri btn-sm" onclick="exportPDF(${a.id})"><i class="ti ti-file-type-pdf"></i> Export PDF</button>
         <button class="btn btn-sec btn-sm" onclick="editAudit(${a.id})"><i class="ti ti-edit"></i> Edit</button>
         <button class="btn btn-sec btn-sm" onclick="goTab('list')"><i class="ti ti-arrow-left"></i> Back</button>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-hd"><i class="ti ti-currency-dollar"></i>Utility Rates (EUR${showLocal?' → '+esc(cs.cur):''})</div>
+      <div class="card-hd"><i class="ti ti-currency-dollar"></i>Utility Rates (${esc(a.currency||'EUR')})</div>
       <div class="kv-grid">
-        ${kv('Water',a.rWater?'EUR '+a.rWater:'–','per m³')}
-        ${kv('Electricity',a.rEle?'EUR '+a.rEle:'–','per kWh')}
-        ${kv('Heat',a.rHeat?'EUR '+a.rHeat:'–','per GJ')}
-        ${kv('NaOH 32%',a.rC32?'EUR '+a.rC32:'–','per kg')}
-        ${kv('NaOH 50%',a.rC50?'EUR '+a.rC50:'–','per kg')}
-        ${kv('Acid',a.rAcid?'EUR '+a.rAcid:'–','per kg')}
-        ${kv('Disinfectant',a.rDis?'EUR '+a.rDis:'–','per kg')}
-        ${showLocal?kv('Exchange rate','1 EUR = '+cs.exRate.toLocaleString()+' '+cs.cur):''}
-      </div>
+        ${kv('Water',a.rWater,'per m³')}
+        ${kv('Electricity',a.rEle,'per kWh')}
+        ${kv('Heat',a.rHeat,'per GJ')}
+        ${kv('NaOH 32%',a.rC32,'per kg')}
+        ${kv('NaOH 50%',a.rC50,'per kg')}
+        ${kv('Acid',a.rAcid,'per kg')}
+        ${kv('Khử trùng',a.rDis,'per kg')}
+              </div>
     </div>
-
-    ${costTableHtml}
 
     ${tankHtml}
 
@@ -1542,323 +1270,9 @@ function renderView(){
   `;
 }
 
-// ── Export PDF ─────────────────────────────────────────────────────
-function exportPDF(id){
-  const a = audits.find(x=>x.id===id);
-  if(!a){ toast('Audit not found'); return; }
-  toast('Generating PDF…');
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
-
-  const GRN  = [15, 110, 86];
-  const GRNDK= [9, 77, 60];
-  const BLU  = [26, 111, 191];
-  const GR1  = [26, 26, 34];
-  const GR3  = [122, 122, 133];
-  const W    = 210;
-  const MARGIN = 14;
-  const CW   = W - MARGIN*2;
-
-  let y = 0;
-
-  // ── helpers ──
-  const hex2rgb = h=>{ const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16); return [r,g,b]; };
-  const fN = (v,d=1)=>{ const x=parseFloat(v); return isNaN(x)?'–':x.toFixed(d).replace(/\.0+$$/,''); };
-  const nv2 = v=>parseFloat(v)||0;
-
-  function newPage(){
-    doc.addPage();
-    y = 14;
-  }
-
-  function checkY(need=20){
-    if(y + need > 278) newPage();
-  }
-
-  // ══ COVER PAGE ══════════════════════════════════════════════════
-  // Header bar
-  doc.setFillColor(...GRNDK);
-  doc.rect(0, 0, W, 38, 'F');
-  doc.setFillColor(...GRN);
-  doc.rect(0, 26, W, 12, 'F');
-
-  doc.setTextColor(255,255,255);
-  doc.setFontSize(20); doc.setFont('helvetica','bold');
-  doc.text('KERSIA', MARGIN, 16);
-  doc.setFontSize(10); doc.setFont('helvetica','normal');
-  doc.text('CIP Audit & TCO Calculator Report', MARGIN, 23);
-
-  doc.setFontSize(9);
-  doc.text(`Generated: ${new Date().toLocaleDateString('en-GB')}`, W-MARGIN, 23, {align:'right'});
-
-  y = 50;
-  // Brewery name big
-  doc.setTextColor(...GRN);
-  doc.setFontSize(22); doc.setFont('helvetica','bold');
-  doc.text(a.brewery||'(No name)', MARGIN, y); y+=9;
-
-  doc.setTextColor(...GR3);
-  doc.setFontSize(10); doc.setFont('helvetica','normal');
-  doc.text(`Audit Date: ${a.date||'–'}   ·   Capacity: ${a.capacity||'–'} hl/year   ·   Tank systems: ${a.tanks.length}`, MARGIN, y); y+=10;
-
-  // divider
-  doc.setDrawColor(...GRN); doc.setLineWidth(0.5);
-  doc.line(MARGIN, y, W-MARGIN, y); y+=8;
-
-  // ── Summary stats box ──
-  doc.setFillColor(240,253,248);
-  doc.roundedRect(MARGIN, y, CW, 40, 3, 3, 'F');
-  doc.setDrawColor(...GRN); doc.setLineWidth(0.3);
-  doc.roundedRect(MARGIN, y, CW, 40, 3, 3, 'S');
-
-  const tC = a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv2(t.cipYr),0);
-  const tW = a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water  *nv2(t.cipYr),0);
-  const tE = a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy *nv2(t.cipYr),0);
-  const tT = a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).time   *nv2(t.cipYr),0);
-  const cs = calcCostSaving(a);
-  const fmtMoney=v=>v===0?'–':(v>0?'▼ ':v<0?'▲ ':'')+' EUR '+Math.abs(v).toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0});
-
-  // 5 stats: add cost
-  const cols5 = CW/5;
-  const stats=[
-    ['NaOH Saving', fN(tC,0)+' kg/yr', GRN],
-    ['Water Saving', fN(tW,0)+' hl/yr', BLU],
-    ['Electricity', fN(tE,0)+' KWh/yr', [184,114,8]],
-    ['Time Saving', fN(tT,1)+' h/yr', [78,66,176]],
-    ['Cost Saving', cs.total?'EUR '+Math.round(Math.abs(cs.total)).toLocaleString()+'/yr':'No rates', cs.total>0?[9,77,60]:[122,122,133]],
-  ];
-  stats.forEach((st,i)=>{
-    const sx = MARGIN + i*cols5 + 3;
-    doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(...GR3);
-    doc.text(st[0], sx, y+10);
-    doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.setTextColor(...st[2]);
-    doc.text(st[1], sx, y+22);
-  });
-  y += 48;
-
-  // ── Utility Rates ──
-  checkY(50);
-  doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(...GRN);
-  doc.text('Utility Rates', MARGIN, y); y+=2;
-  doc.setDrawColor(...GRN); doc.line(MARGIN, y, W-MARGIN, y); y+=4;
-
-  const rateRows=[
-    ['Water', a.rWater, `per m³ (${a.currency||'EUR'})`],
-    ['Electricity', a.rEle, `per kWh (${a.currency||'EUR'})`],
-    ['Heat', a.rHeat, `per GJ (${a.currency||'EUR'})`],
-    ['NaOH 32%', a.rC32, `per kg (${a.currency||'EUR'})`],
-    ['NaOH 50%', a.rC50, `per kg (${a.currency||'EUR'})`],
-    ['Acid', a.rAcid, `per kg (${a.currency||'EUR'})`],
-    ['Disinfectant', a.rDis, `per kg (${a.currency||'EUR'})`],
-  ].filter(r=>r[1]);
-
-  if(rateRows.length){
-    doc.autoTable({
-      startY: y,
-      margin:{left:MARGIN,right:MARGIN},
-      head:[['Item','Rate','Unit']],
-      body: rateRows,
-      styles:{fontSize:9,cellPadding:2.5},
-      headStyles:{fillColor:GRN,textColor:255,fontStyle:'bold',fontSize:9},
-      alternateRowStyles:{fillColor:[245,252,249]},
-      columnStyles:{0:{fontStyle:'bold'},1:{halign:'right'},2:{textColor:GR3}},
-    });
-    y = doc.lastAutoTable.finalY + 6;
-  }
-
-  // ══ TANK SECTIONS ══════════════════════════════════════════════
-  a.tanks.forEach((t,i)=>{
-    checkY(30);
-    // Tank header
-    doc.setFillColor(...GRN);
-    doc.roundedRect(MARGIN, y, CW, 10, 2, 2, 'F');
-    doc.setTextColor(255,255,255);
-    doc.setFontSize(11); doc.setFont('helvetica','bold');
-    doc.text(`Tank System ${i+1}: ${t.tankType||'–'} (${t.numT||'?'} tanks · ${t.grossV||'?'} hl/tank)`, MARGIN+4, y+7);
-    y += 14;
-
-    // Tank info row
-    doc.setFontSize(8.5); doc.setFont('helvetica','normal'); doc.setTextColor(...GR3);
-    doc.text(`CIP per year: ${t.cipYr||'–'}   ·   Supply pump: ${t.supKw||'–'} KWh   ·   Sprayball: ${t.sprayball||'–'}`, MARGIN, y);
-    y += 7;
-
-    // Savings table
-    const sv = calcSav(t.cTot, t.pTot);
-    const rows=[
-      ['Caustic 32% (kg)', fN(nv2(t.cTot.caustic),2), fN(nv2(t.pTot.caustic),2), sv.caustic, nv2(t.cipYr)],
-      ['Acid (kg)',         fN(nv2(t.cTot.acid),2),    fN(nv2(t.pTot.acid),2),    sv.acid,    nv2(t.cipYr)],
-      ['Disinfectant (kg)', fN(nv2(t.cTot.dis),2),     fN(nv2(t.pTot.dis),2),     sv.dis,     nv2(t.cipYr)],
-      ['Water (hl)',        fN(nv2(t.cTot.water),2),   fN(nv2(t.pTot.water),2),   sv.water,   nv2(t.cipYr)],
-      ['Time (h)',          fN(nv2(t.cTot.time),2),    fN(nv2(t.pTot.time),2),    sv.time,    nv2(t.cipYr)],
-      ['Electricity (KWh)', fN(nv2(t.cTot.energy),2),  fN(nv2(t.pTot.energy),2),  sv.energy,  nv2(t.cipYr)],
-    ];
-
-    checkY(rows.length*7+16);
-    doc.autoTable({
-      startY: y,
-      margin:{left:MARGIN,right:MARGIN},
-      head:[['Item','Current / CIP','Kersia Proposal / CIP','Saving / CIP','Saving / Year']],
-      body: rows.map(r=>[
-        r[0], r[1], r[2],
-        (r[3]>0?'▼ ':r[3]<0?'▲ ':'')+Math.abs(r[3]).toFixed(2),
-        (r[3]*r[4]>0?'▼ ':r[3]*r[4]<0?'▲ ':'')+Math.abs(r[3]*r[4]).toFixed(1),
-      ]),
-      styles:{fontSize:9,cellPadding:2.5},
-      headStyles:{fillColor:GRNDK,textColor:255,fontStyle:'bold',fontSize:8.5},
-      alternateRowStyles:{fillColor:[245,252,249]},
-      columnStyles:{
-        0:{fontStyle:'bold'},
-        1:{halign:'right',textColor:BLU},
-        2:{halign:'right',textColor:GRN},
-        3:{halign:'right',fontStyle:'bold'},
-        4:{halign:'right',fontStyle:'bold'},
-      },
-      didParseCell(data){
-        if(data.section==='body' && (data.column.index===3||data.column.index===4)){
-          const txt = String(data.cell.raw||'');
-          if(txt.startsWith('▼')) data.cell.styles.textColor = GRN;
-          else if(txt.startsWith('▲')) data.cell.styles.textColor = [192,57,43];
-          else data.cell.styles.textColor = GR3;
-        }
-      }
-    });
-    y = doc.lastAutoTable.finalY + 10;
-  });
-
-  // ── Cost Savings Table ──
-  if(cs.total!==0){
-    checkY(60);
-    doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(...GRN);
-    doc.text('Cost Savings Summary', MARGIN, y); y+=2;
-    doc.setDrawColor(...GRN); doc.line(MARGIN, y, W-MARGIN, y); y+=4;
-
-    const costRows=[
-      ['Caustic 32%', nv2(a.rC32)?`EUR ${a.rC32} /kg`:'–',
-        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv2(t.cipYr),0),1)+' kg',
-        cs.costCaustic?fmtMoney(cs.costCaustic):'–',
-        cs.totalLocal&&cs.costCaustic?(cs.costCaustic>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costCaustic*cs.exRate)).toLocaleString():'–'],
-      ['Acid', nv2(a.rAcid)?`EUR ${a.rAcid} /kg`:'–',
-        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).acid*nv2(t.cipYr),0),1)+' kg',
-        cs.costAcid?fmtMoney(cs.costAcid):'–',
-        cs.totalLocal&&cs.costAcid?(cs.costAcid>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costAcid*cs.exRate)).toLocaleString():'–'],
-      ['Disinfectant', nv2(a.rDis)?`EUR ${a.rDis} /kg`:'–',
-        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).dis*nv2(t.cipYr),0),1)+' kg',
-        cs.costDis?fmtMoney(cs.costDis):'–',
-        cs.totalLocal&&cs.costDis?(cs.costDis>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costDis*cs.exRate)).toLocaleString():'–'],
-      ['Water', nv2(a.rWater)?`EUR ${a.rWater} /m³`:'–',
-        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water*nv2(t.cipYr),0),1)+' hl',
-        cs.costWater?fmtMoney(cs.costWater):'–',
-        cs.totalLocal&&cs.costWater?(cs.costWater>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costWater*cs.exRate)).toLocaleString():'–'],
-      ['Electricity', nv2(a.rEle)?`EUR ${a.rEle} /kWh`:'–',
-        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy*nv2(t.cipYr),0),1)+' kWh',
-        cs.costEnergy?fmtMoney(cs.costEnergy):'–',
-        cs.totalLocal&&cs.costEnergy?(cs.costEnergy>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costEnergy*cs.exRate)).toLocaleString():'–'],
-    ];
-
-    const totalRowEUR=(cs.total>0?'▼ ':'▲ ')+'EUR '+Math.abs(Math.round(cs.total)).toLocaleString()+' /year';
-    const totalRowLoc=cs.totalLocal?(cs.total>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.totalLocal)).toLocaleString()+' /year':'–';
-
-    const hasCurr=cs.exRate>0&&cs.cur!=='EUR';
-    const head=hasCurr
-      ? [['Item','Unit rate','Saving/year','EUR/year',cs.cur+'/year']]
-      : [['Item','Unit rate','Saving/year','EUR/year']];
-    const body=costRows.map(r=>hasCurr?r:r.slice(0,4));
-    body.push(hasCurr
-      ? ['TOTAL COST SAVING','','',totalRowEUR,totalRowLoc]
-      : ['TOTAL COST SAVING','','',totalRowEUR]);
-
-    doc.autoTable({
-      startY: y,
-      margin:{left:MARGIN,right:MARGIN},
-      head,
-      body,
-      styles:{fontSize:9,cellPadding:2.5},
-      headStyles:{fillColor:GRNDK,textColor:255,fontStyle:'bold',fontSize:9},
-      alternateRowStyles:{fillColor:[245,252,249]},
-      columnStyles:{
-        0:{fontStyle:'bold'},
-        1:{halign:'right',textColor:GR3},
-        2:{halign:'right'},
-        3:{halign:'right',fontStyle:'bold'},
-        4:{halign:'right',fontStyle:'bold'},
-      },
-      didParseCell(data){
-        const lastRow=data.table.body.length-1;
-        if(data.row.index===lastRow){
-          data.cell.styles.fillColor=[9,77,60];
-          data.cell.styles.textColor=[255,255,255];
-          data.cell.styles.fontStyle='bold';
-          data.cell.styles.fontSize=10;
-        } else if(data.section==='body'&&data.column.index>=3){
-          const txt=String(data.cell.raw||'');
-          if(txt.startsWith('▼')) data.cell.styles.textColor=GRN;
-          else if(txt.startsWith('▲')) data.cell.styles.textColor=[192,57,43];
-        }
-      }
-    });
-    y = doc.lastAutoTable.finalY + 8;
-  }
-
-  // ── Notes ──
-  if(a.notes){
-    checkY(20);
-    doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(...GRN);
-    doc.text('Technical Notes & Observations', MARGIN, y); y+=2;
-    doc.setDrawColor(...GRN); doc.line(MARGIN, y, W-MARGIN, y); y+=5;
-    doc.setFontSize(9); doc.setFont('helvetica','normal'); doc.setTextColor(...GR1);
-    const lines = doc.splitTextToSize(a.notes, CW);
-    lines.forEach(ln=>{ checkY(6); doc.text(ln, MARGIN, y); y+=5; });
-    y+=4;
-  }
-
-  // ── Footer on page 1 ──
-  const totalPages = doc.internal.getNumberOfPages();
-  for(let p=1;p<=totalPages;p++){
-    doc.setPage(p);
-    doc.setFontSize(8); doc.setTextColor(...GR3);
-    doc.text('Kersia Vietnam – CIP Audit & TCO Calculator', MARGIN, 290);
-    doc.text(`Page ${p} / ${totalPages}`, W-MARGIN, 290, {align:'right'});
-  }
-
-  const fname = `Kersia_CIP_Audit_${(a.brewery||'report').replace(/\s+/g,'_')}_${a.date||'report'}.pdf`;
-  doc.save(fname);
-  toast('PDF exported: '+fname);
-}
-
 // ── Init ───────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('f-date').value = new Date().toISOString().slice(0,10);
-
-  // Show loading overlay while decrypting
-  const overlay = document.createElement('div');
-  overlay.id = 'crypto-loading';
-  overlay.style.cssText = `
-    position:fixed;inset:0;z-index:9998;
-    background:linear-gradient(135deg,#094d3c,#0F6E56);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
-    color:#fff;font-family:Inter,system-ui,sans-serif;
-  `;
-  overlay.innerHTML = `
-    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.5">
-      <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-    </svg>
-    <div style="font-size:17px;font-weight:700;letter-spacing:.02em">Decrypting data…</div>
-    <div style="font-size:13px;color:rgba(255,255,255,.6)">AES-GCM 256-bit · PBKDF2</div>
-  `;
-  document.body.appendChild(overlay);
-
-  try {
-    audits = await CRYPTO.load();
-  } catch(e) {
-    audits = [];
-    console.error('Load error:', e);
-  }
-
-  overlay.style.transition = 'opacity .35s';
-  overlay.style.opacity = '0';
-  setTimeout(() => overlay.remove(), 380);
-
   renderDash();
   renderList();
 });
@@ -1885,79 +1299,6 @@ function tickClock(){
 tickClock();
 setInterval(tickClock, 1000);
 
-</script>
-
-<!-- ══ iOS INSTALL PROMPT ════════════════════════════════════════════ -->
-<div id="ios-prompt" style="
-  display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;
-  background:#094d3c;color:#fff;padding:14px 18px 20px;
-  font-family:Inter,system-ui,sans-serif;font-size:14px;
-  box-shadow:0 -4px 20px rgba(0,0,0,.3);
-">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-    <strong style="font-size:15px">📲 Cài app lên iPhone</strong>
-    <button onclick="document.getElementById('ios-prompt').style.display='none'"
-      style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:50%;
-             width:26px;height:26px;font-size:16px;cursor:pointer;line-height:1">✕</button>
-  </div>
-  <div style="color:rgba(255,255,255,.85);line-height:1.5">
-    Nhấn nút <strong>
-      <svg style="vertical-align:middle;display:inline" width="16" height="16" viewBox="0 0 50 50" fill="white">
-        <path d="M30.3 13.7L25 8.4l-5.3 5.3-1.4-1.4L25 5.6l6.7 6.7z"/>
-        <path d="M24 7h2v21h-2z"/>
-        <path d="M35 40H15c-1.7 0-3-1.3-3-3V19c0-1.7 1.3-3 3-3h7v2h-7c-.6 0-1 .4-1 1v18c0 .6.4 1 1 1h20c.6 0 1-.4 1-1V19c0-.6-.4-1-1-1h-7v-2h7c1.7 0 3 1.3 3 3v18c0 1.7-1.3 3-3 3z"/>
-      </svg>
-      Share
-    </strong> rồi chọn <strong>"Add to Home Screen"</strong>
-  </div>
-</div>
-<script>
-(function(){
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isStandalone = ('standalone' in navigator) && navigator.standalone;
-  const dismissed = localStorage.getItem('iosPromptDismissed');
-  if(isIOS && !isStandalone && !dismissed){
-    setTimeout(()=>{
-      document.getElementById('ios-prompt').style.display='block';
-    }, 2500);
-  }
-  const btn = document.querySelector('#ios-prompt button');
-  if(btn) btn.addEventListener('click',()=>localStorage.setItem('iosPromptDismissed','1'));
-})();
-</script>
-
-<!-- ══ PWA SERVICE WORKER ════════════════════════════════════════════ -->
-<script>
-if('serviceWorker' in navigator){
-  const SW_CODE = `
-    const CACHE = 'kersia-cip-v1';
-    const ASSETS = [location.href];
-    self.addEventListener('install', e => {
-      e.waitUntil(
-        caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
-      );
-    });
-    self.addEventListener('activate', e => {
-      e.waitUntil(
-        caches.keys().then(keys =>
-          Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))
-        ).then(() => self.clients.claim())
-      );
-    });
-    self.addEventListener('fetch', e => {
-      e.respondWith(
-        caches.match(e.request).then(r => r || fetch(e.request).catch(() =>
-          caches.match(e.request)
-        ))
-      );
-    });
-  `;
-  const blob = new Blob([SW_CODE], {type:'application/javascript'});
-  const url  = URL.createObjectURL(blob);
-  navigator.serviceWorker.register(url)
-    .then(()=>console.log('SW registered'))
-    .catch(e=>console.warn('SW error',e));
-}
 </script>
 </body>
 </html>
