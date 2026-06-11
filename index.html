@@ -434,11 +434,11 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
     <div class="stat-grid" id="stat-grid"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
       <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><i class="ti ti-leaf"></i>NaOH saving (kg/year)</div>
+        <div class="card-hd"><i class="ti ti-leaf"></i>Tiết kiệm NaOH theo breweries (kg/year)</div>
         <div class="chart-wrap"><canvas id="ch-caustic"></canvas></div>
       </div>
       <div class="card" style="margin-bottom:0">
-        <div class="card-hd"><i class="ti ti-droplet"></i>Water saving (hl/year)</div>
+        <div class="card-hd"><i class="ti ti-droplet"></i>Tiết kiệm nước theo breweries (hl/year)</div>
         <div class="chart-wrap"><canvas id="ch-water"></canvas></div>
       </div>
     </div>
@@ -448,7 +448,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
         <thead><tr>
           <th>Brewery</th><th>Audit date</th><th>Capacity (hl)</th>
           <th>Tank</th><th>NaOH saving (kg/year)</th>
-          <th>Water saving (hl/year)</th><th>Actions</th>
+          <th>TK Water (hl/year)</th><th>Actions</th>
         </tr></thead>
         <tbody id="dash-tbody"></tbody>
       </table>
@@ -466,7 +466,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
   </div>
   <div id="list-empty" class="card empty" style="display:none">
     <i class="ti ti-file-off"></i><h3>No audits yet</h3>
-    <p>Click "New Audit" to get started.</p>
+    <p>Nhấn "New Audit" để bắt đầu.</p>
   </div>
   <div id="list-cards"></div>
 </div>
@@ -594,7 +594,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
 'use strict';
 // ── Hằng số ────────────────────────────────────────────────────────
 const TANK_TYPES = ["FST","BBT","YRT","YPT","HORAP","DAW","H&T","Other"];
-const CIP_FREQ   = ["After Tank Discharge","Every Batch","Weekly","Biweekly","Monthly","Custom"];
+const CIP_FREQ   = ["Sau khi xả tank","Mỗi mẻ sản xuất","Hàng tuần","Hai tuần/lần","Hàng tháng","Tùy chỉnh"];
 const SPRAYBALL  = ["Cố định (Fixed)","Quay (Rotating)","CIP-O-Mat","Vòi phun (Nozzle)","Other"];
 const YES_NO     = ["Yes","No"];
 const RECOVERY   = ["Recovery","No recovery"];
@@ -603,7 +603,7 @@ const RECOVERY   = ["Recovery","No recovery"];
 let audits = [];
 let cur = null;   // audit đang chỉnh sửa
 let viewA = null; // audit đang xem
-let chC=null, chW=null, chA=null, chD=null; // chart instances
+let chC=null, chW=null; // chart instances
 
 // ── Helpers ────────────────────────────────────────────────────────
 const nv = v => parseFloat(v)||0;
@@ -822,7 +822,7 @@ function readForm(){
 
 async function saveAudit(){
   readForm();
-  if(!cur.brewery){ document.getElementById('f-brewery').focus(); toast('Please enter brewery name'); return; }
+  if(!cur.brewery){ document.getElementById('f-brewery').focus(); toast('Vui lòng nhập tên breweries'); return; }
   const idx=audits.findIndex(a=>a.id===cur.id);
   if(idx>=0) audits[idx]=cur; else audits.push(cur);
   await persist();
@@ -959,7 +959,7 @@ function cipHtml(i, mode){
          f('1.1 Step time','wp1t',d.wp1t,'min'),
          f('1.1 Flow rate','wp1f',d.wp1f,'hl/h'),
          f('1.1 Step volume','wp1v',d.wp1v,'hl'))}
-    ${f4(f('1.2 Rinsing intervals','wp2i',d.wp2i,'times'),
+    ${f4(f('1.2 Rinsing intervals','wp2i',d.wp2i,'lần'),
          f('1.2 Step time','wp2t',d.wp2t,'min'),
          f('1.2 Flow rate','wp2f',d.wp2f,'hl/h'),
          f('1.2 Step volume','wp2v',d.wp2v,'hl'))}
@@ -976,7 +976,7 @@ function cipHtml(i, mode){
          f('Flow rate','cp2f',d.cp2f,'hl/h'),
          f('Step volume','cp2v',d.cp2v,'hl'),EMPTY)}
     ${sub('2.3 Caustic circulation rinsing')}
-    ${f4(f('Circulation intervals','cp3i',d.cp3i,'times'),
+    ${f4(f('Circulation intervals','cp3i',d.cp3i,'lần'),
          f('Step time','cp3t',d.cp3t,'min'),
          f('Flow rate','cp3f',d.cp3f,'hl/h'),
          f('Step volume','cp3v',d.cp3v,'hl'))}
@@ -1000,7 +1000,7 @@ function cipHtml(i, mode){
          f('Flow rate','iw1f',d.iw1f,'hl/h'),
          f('Step volume','iw1v',d.iw1v,'hl'),EMPTY)}
     ${sub('2b.2 Water rinsing')}
-    ${f4(f('Rinsing intervals','iw2i',d.iw2i,'times'),
+    ${f4(f('Rinsing intervals','iw2i',d.iw2i,'lần'),
          f('Step time','iw2t',d.iw2t,'min'),
          f('Flow rate','iw2f',d.iw2f,'hl/h'),
          f('Step volume','iw2v',d.iw2v,'hl'))}
@@ -1019,7 +1019,7 @@ function cipHtml(i, mode){
     ${f4(f('Step time','ap2t',d.ap2t,'min'),
          f('Flow rate','ap2f',d.ap2f,'hl/h'),EMPTY,EMPTY)}
     ${sub('3.3 Acid circulation rinsing')}
-    ${f4(f('Circulation intervals','ap3i',d.ap3i,'times'),
+    ${f4(f('Circulation intervals','ap3i',d.ap3i,'lần'),
          f('Step time','ap3t',d.ap3t,'min'),
          f('Flow rate','ap3f',d.ap3f,'hl/h'),
          f('Rest time','ap3r',d.ap3r,'min'))}
@@ -1032,7 +1032,7 @@ function cipHtml(i, mode){
     ${f4(f('4.1 Step time','iw3t',d.iw3t,'min'),
          f('4.1 Flow rate','iw3f',d.iw3f,'hl/h'),
          f('4.1 Step volume','iw3v',d.iw3v,'hl'),EMPTY)}
-    ${f4(f('4.2 Rinsing intervals','iw4i',d.iw4i,'times'),
+    ${f4(f('4.2 Rinsing intervals','iw4i',d.iw4i,'lần'),
          f('4.2 Step time','iw4t',d.iw4t,'min'),
          f('4.2 Flow rate','iw4f',d.iw4f,'hl/h'),
          f('4.2 Step volume','iw4v',d.iw4v,'hl'))}
@@ -1049,7 +1049,7 @@ function cipHtml(i, mode){
          f('Flow rate','dp1f',d.dp1f,'hl/h'),
          f('Step volume','dp1v',d.dp1v,'hl'),EMPTY)}
     ${sub('5.2 Disinfectant circulation')}
-    ${f4(f('Circulation intervals','dp2i',d.dp2i,'times'),
+    ${f4(f('Circulation intervals','dp2i',d.dp2i,'lần'),
          f('Step time','dp2t',d.dp2t,'min'),
          f('Flow rate','dp2f',d.dp2f,'hl/h'),
          f('Step volume','dp2v',d.dp2v,'hl'))}
@@ -1062,7 +1062,7 @@ function cipHtml(i, mode){
     ${f4(f('6.1 Step time','fw1t',d.fw1t,'min'),
          f('6.1 Flow rate','fw1f',d.fw1f,'hl/h'),
          f('6.1 Step volume','fw1v',d.fw1v,'hl'),EMPTY)}
-    ${f4(f('6.2 Rinsing intervals','fw2i',d.fw2i,'times'),
+    ${f4(f('6.2 Rinsing intervals','fw2i',d.fw2i,'lần'),
          f('6.2 Step time','fw2t',d.fw2t,'min'),
          f('6.2 Flow rate','fw2f',d.fw2f,'hl/h'),
          f('6.2 Step volume','fw2v',d.fw2v,'hl'))}
@@ -1079,7 +1079,7 @@ function tankFormHtml(i){
       <div class="tank-badge">T${i+1}</div>
       <div class="tank-hd-info">
         <div class="tank-hd-title" id="tt-${i}">${esc(t.tankType)||'Tank '+(i+1)}</div>
-        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} CIP/year</div>
+        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} lần CIP/năm</div>
       </div>
       <button class="btn btn-dan btn-sm" onclick="removeTank(${i})"><i class="ti ti-trash"></i> Remove</button>
     </div>
@@ -1227,25 +1227,12 @@ function renderList(){
     return `<div class="chip"><span class="text-gray">${lbl}:</span>
       <span class="${cls}">${ar}${Math.abs(v).toFixed(1)} ${u}</span></div>`;
   };
-  const chipCost=(cs)=>{
-    if(!cs||!cs.total) return '';
-    const fmt=v=>Math.abs(v)>=1000?Math.round(Math.abs(v)).toLocaleString():Math.abs(v).toFixed(0);
-    const cls=cs.total>0?'sv-pos':cs.total<0?'sv-neg':'sv-zero';
-    const ar=cs.total>0?'▼ ':'▲ ';
-    let txt=ar+'EUR '+fmt(cs.total)+'/year';
-    if(cs.totalLocal) txt+=' ≈ '+cs.cur+' '+fmt(cs.totalLocal)+'/year';
-    return `<div class="chip" style="background:var(--green-lt);border-color:var(--green)">
-      <i class="ti ti-coin" style="color:var(--green)"></i>
-      <span class="text-gray">Cost saving:</span>
-      <span class="${cls}" style="font-size:15px">${txt}</span></div>`;
-  };
 
   cards.innerHTML=audits.slice().reverse().map(a=>{
     const c=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0);
     const w=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water  *nv(t.cipYr),0);
     const e=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy *nv(t.cipYr),0);
     const tm=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).time  *nv(t.cipYr),0);
-    const cs=calcCostSaving(a);
     return `<div class="card">
       <div class="row-bw mb8">
         <div>
@@ -1264,7 +1251,6 @@ function renderList(){
       <div class="sav-strip">
         ${chip('NaOH',c,'kg/year')}${chip('Water',w,'hl/year')}
         ${chip('Electricity',e,'KWh/year')}${chip('Time',tm,'h/year')}
-        ${chipCost(cs)}
       </div>
     </div>`;
   }).join('');
@@ -1285,29 +1271,34 @@ function renderDash(){
 
   document.getElementById('stat-grid').innerHTML=`
     <div class="stat-card"><div class="stat-lbl">Total audits</div><div class="stat-val text-green">${audits.length}</div><div class="stat-unit">breweries</div></div>
-    <div class="stat-card"><div class="stat-lbl">Tank systems</div><div class="stat-val text-blue">${tTk}</div><div class="stat-unit">systems</div></div>
+    <div class="stat-card"><div class="stat-lbl">Tank CIP</div><div class="stat-val text-blue">${tTk}</div><div class="stat-unit">systems</div></div>
     <div class="stat-card"><div class="stat-lbl">NaOH saving</div><div class="stat-val text-green">${fmtN(tC,0)}</div><div class="stat-unit">kg/year</div></div>
-    <div class="stat-card"><div class="stat-lbl">Water saving</div><div class="stat-val text-blue">${fmtN(tW,0)}</div><div class="stat-unit">hl/year</div></div>
-    <div class="stat-card"><div class="stat-lbl">Electricity saving</div><div class="stat-val" style="color:var(--amber)">${fmtN(tE,0)}</div><div class="stat-unit">KWh/year</div></div>
+    <div class="stat-card"><div class="stat-lbl">TK Water</div><div class="stat-val text-blue">${fmtN(tW,0)}</div><div class="stat-unit">hl/year</div></div>
+    <div class="stat-card"><div class="stat-lbl">TK Electricity</div><div class="stat-val" style="color:var(--amber)">${fmtN(tE,0)}</div><div class="stat-unit">KWh/year</div></div>
     <div class="stat-card"><div class="stat-lbl">Time saving</div><div class="stat-val" style="color:var(--purple)">${fmtN(tT,1)}</div><div class="stat-unit">h/year</div></div>`;
 
-  const labels=audits.map(a=>String(a.brewery||'Audit'));
+  const labels=audits.map(a=>esc(a.brewery||'Audit'));
   const dC=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0));
   const dW=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water  *nv(t.cipYr),0));
-  const dA=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).acid   *nv(t.cipYr),0));
-  const dD=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).dis    *nv(t.cipYr),0));
-  const mkChart=(id,data,color,label)=>new Chart(document.getElementById(id),{
+
+  if(chC) chC.destroy();
+  if(chW) chW.destroy();
+  chC=new Chart(document.getElementById('ch-caustic'),{
     type:'bar',
-    data:{labels,datasets:[{label,data,backgroundColor:color+'b3',borderColor:color,borderWidth:1.5,borderRadius:5}]},
+    data:{labels,datasets:[{label:'NaOH (kg/year)',data:dC,
+      backgroundColor:'rgba(15,110,86,.72)',borderColor:'#0F6E56',borderWidth:1.5,borderRadius:5}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false}},
       scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}
   });
-  if(chC)chC.destroy(); if(chW)chW.destroy(); if(chA)chA.destroy(); if(chD)chD.destroy();
-  chC=mkChart('ch-caustic',dC,'#0F6E56','NaOH (kg/year)');
-  chW=mkChart('ch-water',  dW,'#1A6FBF','Water (hl/year)');
-  chA=mkChart('ch-acid',   dA,'#D97706','Acid (kg/year)');
-  chD=mkChart('ch-dis',    dD,'#7C3AED','Disinfectant (kg/year)');
+  chW=new Chart(document.getElementById('ch-water'),{
+    type:'bar',
+    data:{labels,datasets:[{label:'Water (hl/year)',data:dW,
+      backgroundColor:'rgba(26,111,191,.70)',borderColor:'#1A6FBF',borderWidth:1.5,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}
+  });
 
   document.getElementById('dash-tbody').innerHTML=audits.slice().reverse().map(a=>{
     const c=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0);
@@ -1341,24 +1332,17 @@ function renderView(){
   const tankHtml=a.tanks.map((t,i)=>{
     const sv=calcSav(t.cTot,t.pTot);
     const yr=k=>(sv[k]*nv(t.cipYr)).toFixed(1);
-    const rates={caustic:nv(a.rC32),acid:nv(a.rAcid),dis:nv(a.rDis),water:nv(a.rWater),energy:nv(a.rEle),time:0};
     const row=(lbl,ck,unit)=>{
       const cv=nv(t.cTot[ck]),pv=nv(t.pTot[ck]),d=cv-pv;
       const yv=parseFloat(yr(ck));
       const col=d>0?'var(--green)':d<0?'var(--red)':'var(--gray-3)';
       const colY=yv>0?'var(--green)':yv<0?'var(--red)':'var(--gray-3)';
-      const rate=rates[ck]||0;
-      const conv=ck==='water'?0.1:1;
-      const costYr=rate?yv*conv*rate:null;
-      const colC=costYr>0?'var(--green)':costYr<0?'var(--red)':'var(--gray-3)';
-      const costStr=costYr?`${costYr>0?'▼ ':'▲ '}EUR ${Math.abs(costYr).toLocaleString('en',{maximumFractionDigits:0})}`:'–';
       return `<tr>
         <td class="fw7">${lbl}</td>
         <td style="text-align:right;color:var(--blue);font-weight:600">${fmtN(cv,2)} ${unit}</td>
         <td style="text-align:right;color:var(--green);font-weight:600">${fmtN(pv,2)} ${unit}</td>
         <td style="text-align:right;font-weight:700;color:${col}">${d>0?'▼ ':d<0?'▲ ':''}${Math.abs(d).toFixed(2)} ${unit}</td>
         <td style="text-align:right;font-weight:700;color:${colY}">${yv>0?'▼ ':yv<0?'▲ ':''}${Math.abs(yv)} ${unit}</td>
-        <td style="text-align:right;font-weight:700;color:${costYr?colC:'var(--gray-4)'}">${costStr}</td>
       </tr>`;
     };
     return `<div class="card">
@@ -1376,7 +1360,6 @@ function renderView(){
           <th style="text-align:right">Kersia proposal / CIP</th>
           <th style="text-align:right">Saving / CIP</th>
           <th style="text-align:right">Saving / year</th>
-          <th style="text-align:right">Cost saving EUR/yr</th>
         </tr></thead>
         <tbody>
           ${row('Caustic 32% (kg)','caustic','kg')}
@@ -1415,40 +1398,6 @@ function renderView(){
         ${kv('Khử trùng',a.rDis,'per kg')}
               </div>
     </div>
-
-    ${(()=>{
-      const cs=calcCostSaving(a);
-      if(!cs.total) return '';
-      const fmt=v=>(v>0?'▼ ':'▲ ')+'EUR '+Math.abs(v).toLocaleString('en',{maximumFractionDigits:0})+'/yr';
-      const fmtL=v=>cs.exRate>0?(v>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(v*cs.exRate)).toLocaleString('en')+'/yr':'';
-      const col=v=>v>0?'var(--green)':v<0?'var(--red)':'var(--gray-3)';
-      const rows=[
-        ['Caustic 32%','EUR '+(a.rC32||'–')+' /kg',cs.costCaustic],
-        ['Acid','EUR '+(a.rAcid||'–')+' /kg',cs.costAcid],
-        ['Disinfectant','EUR '+(a.rDis||'–')+' /kg',cs.costDis],
-        ['Water','EUR '+(a.rWater||'–')+' /m³',cs.costWater],
-        ['Electricity','EUR '+(a.rEle||'–')+' /kWh',cs.costEnergy],
-      ].filter(r=>r[2]);
-      return `<div class="card" style="border:2px solid var(--green)">
-        <div class="card-hd"><i class="ti ti-coins"></i>Cost Savings Summary</div>
-        <table class="tbl">
-          <thead><tr><th>Item</th><th style="text-align:right">Rate</th>
-            <th style="text-align:right">EUR/year</th>
-            ${cs.exRate>0?`<th style="text-align:right">${cs.cur}/year</th>`:''}</tr></thead>
-          <tbody>
-            ${rows.map(r=>`<tr><td class="fw7">${r[0]}</td><td style="text-align:right">${r[1]}</td>
-              <td style="text-align:right;font-weight:700;color:${col(r[2])}">${fmt(r[2])}</td>
-              ${cs.exRate>0?`<td style="text-align:right;font-weight:700;color:${col(r[2])}">${fmtL(r[2])}</td>`:''}</tr>`).join('')}
-            <tr style="background:var(--green-lt)">
-              <td class="fw7" colspan="2" style="color:var(--green);font-size:15px">TOTAL / YEAR</td>
-              <td style="text-align:right;font-weight:800;font-size:17px;color:${col(cs.total)}">${fmt(cs.total)}</td>
-              ${cs.exRate>0?`<td style="text-align:right;font-weight:800;font-size:17px;color:${col(cs.total)}">${fmtL(cs.total)}</td>`:''}
-            </tr>
-          </tbody>
-        </table>
-        ${cs.exRate>0?`<div style="font-size:12px;color:var(--gray-3);margin-top:8px">Rate: 1 EUR = ${cs.exRate.toLocaleString()} ${cs.cur}</div>`:''}
-      </div>`;
-    })()}
 
     ${tankHtml}
 
@@ -1680,7 +1629,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.5">
       <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
     </svg>
-    <div style="font-size:17px;font-weight:700;letter-spacing:.02em">Decrypting data…</div>
+    <div style="font-size:17px;font-weight:700;letter-spacing:.02em">Đang giải mã dữ liệu…</div>
     <div style="font-size:13px;color:rgba(255,255,255,.6)">AES-GCM 256-bit · PBKDF2</div>
   `;
   document.body.appendChild(overlay);
