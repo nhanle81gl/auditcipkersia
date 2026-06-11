@@ -475,7 +475,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
   </div>
   <div id="list-empty" class="card empty" style="display:none">
     <i class="ti ti-file-off"></i><h3>No audits yet</h3>
-    <p>Nhấn "New Audit" để bắt đầu.</p>
+    <p>Click "New Audit" to get started.</p>
   </div>
   <div id="list-cards"></div>
 </div>
@@ -603,7 +603,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
 'use strict';
 // ── Hằng số ────────────────────────────────────────────────────────
 const TANK_TYPES = ["FST","BBT","YRT","YPT","HORAP","DAW","H&T","Other"];
-const CIP_FREQ   = ["Sau khi xả tank","Mỗi mẻ sản xuất","Hàng tuần","Hai tuần/lần","Hàng tháng","Tùy chỉnh"];
+const CIP_FREQ   = ["After Tank Discharge","Every Batch","Weekly","Biweekly","Monthly","Custom"];
 const SPRAYBALL  = ["Cố định (Fixed)","Quay (Rotating)","CIP-O-Mat","Vòi phun (Nozzle)","Other"];
 const YES_NO     = ["Yes","No"];
 const RECOVERY   = ["Recovery","No recovery"];
@@ -993,7 +993,7 @@ function cipHtml(i, mode){
          f('1.1 Step time','wp1t',d.wp1t,'min'),
          f('1.1 Flow rate','wp1f',d.wp1f,'hl/h'),
          f('1.1 Step volume','wp1v',d.wp1v,'hl'))}
-    ${f4(f('1.2 Rinsing intervals','wp2i',d.wp2i,'lần'),
+    ${f4(f('1.2 Rinsing intervals','wp2i',d.wp2i,'times'),
          f('1.2 Step time','wp2t',d.wp2t,'min'),
          f('1.2 Flow rate','wp2f',d.wp2f,'hl/h'),
          f('1.2 Step volume','wp2v',d.wp2v,'hl'))}
@@ -1010,7 +1010,7 @@ function cipHtml(i, mode){
          f('Flow rate','cp2f',d.cp2f,'hl/h'),
          f('Step volume','cp2v',d.cp2v,'hl'),EMPTY)}
     ${sub('2.3 Caustic circulation rinsing')}
-    ${f4(f('Circulation intervals','cp3i',d.cp3i,'lần'),
+    ${f4(f('Circulation intervals','cp3i',d.cp3i,'times'),
          f('Step time','cp3t',d.cp3t,'min'),
          f('Flow rate','cp3f',d.cp3f,'hl/h'),
          f('Step volume','cp3v',d.cp3v,'hl'))}
@@ -1034,7 +1034,7 @@ function cipHtml(i, mode){
          f('Flow rate','iw1f',d.iw1f,'hl/h'),
          f('Step volume','iw1v',d.iw1v,'hl'),EMPTY)}
     ${sub('2b.2 Water rinsing')}
-    ${f4(f('Rinsing intervals','iw2i',d.iw2i,'lần'),
+    ${f4(f('Rinsing intervals','iw2i',d.iw2i,'times'),
          f('Step time','iw2t',d.iw2t,'min'),
          f('Flow rate','iw2f',d.iw2f,'hl/h'),
          f('Step volume','iw2v',d.iw2v,'hl'))}
@@ -1053,7 +1053,7 @@ function cipHtml(i, mode){
     ${f4(f('Step time','ap2t',d.ap2t,'min'),
          f('Flow rate','ap2f',d.ap2f,'hl/h'),EMPTY,EMPTY)}
     ${sub('3.3 Acid circulation rinsing')}
-    ${f4(f('Circulation intervals','ap3i',d.ap3i,'lần'),
+    ${f4(f('Circulation intervals','ap3i',d.ap3i,'times'),
          f('Step time','ap3t',d.ap3t,'min'),
          f('Flow rate','ap3f',d.ap3f,'hl/h'),
          f('Rest time','ap3r',d.ap3r,'min'))}
@@ -1066,7 +1066,7 @@ function cipHtml(i, mode){
     ${f4(f('4.1 Step time','iw3t',d.iw3t,'min'),
          f('4.1 Flow rate','iw3f',d.iw3f,'hl/h'),
          f('4.1 Step volume','iw3v',d.iw3v,'hl'),EMPTY)}
-    ${f4(f('4.2 Rinsing intervals','iw4i',d.iw4i,'lần'),
+    ${f4(f('4.2 Rinsing intervals','iw4i',d.iw4i,'times'),
          f('4.2 Step time','iw4t',d.iw4t,'min'),
          f('4.2 Flow rate','iw4f',d.iw4f,'hl/h'),
          f('4.2 Step volume','iw4v',d.iw4v,'hl'))}
@@ -1083,7 +1083,7 @@ function cipHtml(i, mode){
          f('Flow rate','dp1f',d.dp1f,'hl/h'),
          f('Step volume','dp1v',d.dp1v,'hl'),EMPTY)}
     ${sub('5.2 Disinfectant circulation')}
-    ${f4(f('Circulation intervals','dp2i',d.dp2i,'lần'),
+    ${f4(f('Circulation intervals','dp2i',d.dp2i,'times'),
          f('Step time','dp2t',d.dp2t,'min'),
          f('Flow rate','dp2f',d.dp2f,'hl/h'),
          f('Step volume','dp2v',d.dp2v,'hl'))}
@@ -1096,7 +1096,7 @@ function cipHtml(i, mode){
     ${f4(f('6.1 Step time','fw1t',d.fw1t,'min'),
          f('6.1 Flow rate','fw1f',d.fw1f,'hl/h'),
          f('6.1 Step volume','fw1v',d.fw1v,'hl'),EMPTY)}
-    ${f4(f('6.2 Rinsing intervals','fw2i',d.fw2i,'lần'),
+    ${f4(f('6.2 Rinsing intervals','fw2i',d.fw2i,'times'),
          f('6.2 Step time','fw2t',d.fw2t,'min'),
          f('6.2 Flow rate','fw2f',d.fw2f,'hl/h'),
          f('6.2 Step volume','fw2v',d.fw2v,'hl'))}
@@ -1113,7 +1113,7 @@ function tankFormHtml(i){
       <div class="tank-badge">T${i+1}</div>
       <div class="tank-hd-info">
         <div class="tank-hd-title" id="tt-${i}">${esc(t.tankType)||'Tank '+(i+1)}</div>
-        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} lần CIP/năm</div>
+        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} CIP/year</div>
       </div>
       <button class="btn btn-dan btn-sm" onclick="removeTank(${i})"><i class="ti ti-trash"></i> Remove</button>
     </div>
@@ -1570,11 +1570,6 @@ function exportPDF(id){
   function newPage(){
     doc.addPage();
     y = 14;
-    // footer on every page
-    doc.setFontSize(8); doc.setTextColor(...GR3);
-    doc.text('Kersia Vietnam – CIP Audit & TCO Calculator', MARGIN, 290);
-    doc.text(`Page ${doc.internal.getNumberOfPages()}`, W-MARGIN, 290, {align:'right'});
-    doc.setTextColor(...GR1);
   }
 
   function checkY(need=20){
@@ -1848,7 +1843,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.5">
       <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
     </svg>
-    <div style="font-size:17px;font-weight:700;letter-spacing:.02em">Đang giải mã dữ liệu…</div>
+    <div style="font-size:17px;font-weight:700;letter-spacing:.02em">Decrypting data…</div>
     <div style="font-size:13px;color:rgba(255,255,255,.6)">AES-GCM 256-bit · PBKDF2</div>
   `;
   document.body.appendChild(overlay);
