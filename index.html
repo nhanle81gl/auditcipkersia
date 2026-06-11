@@ -1395,7 +1395,7 @@ function renderView(){
         ${kv('NaOH 32%',a.rC32,'per kg')}
         ${kv('NaOH 50%',a.rC50,'per kg')}
         ${kv('Acid',a.rAcid,'per kg')}
-        ${kv('Khử trùng',a.rDis,'per kg')}
+        ${kv('Disifectant',a.rDis,'per kg')}
               </div>
     </div>
 
@@ -1447,9 +1447,11 @@ function exportPDF(id){
   doc.setFillColor(...GRN);
   doc.rect(0, 26, W, 12, 'F');
 
-  doc.setTextColor(255,255,255);
   doc.addFileToVFS("Roboto-Regular.ttf", fontData);
-  doc.addFont("Roboto-Regular.ttf", "Roboto", "normal");
+doc.addFont("Roboto-Regular.ttf", "Roboto", "normal");
+doc.setFont("Roboto", "normal");
+
+doc.setTextColor(255,255,255);
   doc.text('CIP Audit & TCO Calculator Report', MARGIN, 23);
 
   doc.setFontSize(9);
