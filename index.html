@@ -442,18 +442,27 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
         <div class="chart-wrap"><canvas id="ch-water"></canvas></div>
       </div>
     </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px">
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hd"><i class="ti ti-flask"></i>Acid saving in breweries (kg/year)</div>
+        <div class="chart-wrap"><canvas id="ch-acid"></canvas></div>
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="card-hd"><i class="ti ti-shield-check"></i>Disinfectant saving in breweries (kg/year)</div>
+        <div class="chart-wrap"><canvas id="ch-dis"></canvas></div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-hd"><i class="ti ti-building-factory"></i>Audit list</div>
       <table class="tbl">
         <thead><tr>
           <th>Brewery</th><th>Audit date</th><th>Capacity (hl)</th>
-          <th>Tank</th><th>NaOH saving (kg/year)</th>
+          <th>Tanks</th><th>NaOH saving (kg/year)</th>
           <th>Water saving (hl/year)</th><th>Actions</th>
         </tr></thead>
         <tbody id="dash-tbody"></tbody>
       </table>
     </div>
-  </div>
 </div>
 
 <!-- ══ PAGE: LỊCH SỬ ════════════════════════════════════════════════ -->
@@ -556,7 +565,7 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
   <!-- Danh sách tank system(s) -->
   <div class="row-bw mb12">
     <div style="font-size:16px;font-weight:700;color:var(--green)">
-      Tank systems <span id="tank-cnt" class="badge bg-green" style="margin-left:6px">0 </span>
+      Tank systems <span id="tank-cnt" class="badge bg-green" style="margin-left:6px">0 hệ</span>
     </div>
     <button class="btn btn-pri btn-sm" onclick="addTank()"><i class="ti ti-plus"></i> Add tank</button>
   </div>
@@ -594,8 +603,8 @@ footer{background:var(--green-dk);color:rgba(255,255,255,.60);font-size:13px;
 'use strict';
 // ── Hằng số ────────────────────────────────────────────────────────
 const TANK_TYPES = ["FST","BBT","YRT","YPT","HORAP","DAW","H&T","Other"];
-const CIP_FREQ  = ["After Tank Discharge","Every Batch","Weekly","Biweekly","Monthly","Custom"];
-const SPRAYBALL = ["Fixed","Rotating","CIP-O-Mat","Nozzle","Other"];
+const CIP_FREQ   = ["Sau khi xả tank","Mỗi mẻ sản xuất","Hàng tuần","Hai tuần/lần","Hàng tháng","Tùy chỉnh"];
+const SPRAYBALL  = ["Cố định (Fixed)","Quay (Rotating)","CIP-O-Mat","Vòi phun (Nozzle)","Other"];
 const YES_NO     = ["Yes","No"];
 const RECOVERY   = ["Recovery","No recovery"];
 
@@ -603,7 +612,7 @@ const RECOVERY   = ["Recovery","No recovery"];
 let audits = [];
 let cur = null;   // audit đang chỉnh sửa
 let viewA = null; // audit đang xem
-let chC=null, chW=null; // chart instances
+let chC=null, chW=null, chA=null, chD=null; // chart instances
 
 // ── Helpers ────────────────────────────────────────────────────────
 const nv = v => parseFloat(v)||0;
@@ -628,10 +637,35 @@ function calcSav(ct,pt){
   };
 }
 
+// Tính tổng tiết kiệm chi phí EUR/năm từ các rates và savings
+function calcCostSaving(a){
+  const rW  = nv(a.rWater);   // EUR/m³  (1 hl = 0.1 m³)
+  const rE  = nv(a.rEle);     // EUR/kWh
+  const rC32= nv(a.rC32);     // EUR/kg caustic 32%
+  const rAcid=nv(a.rAcid);    // EUR/kg acid
+  const rDis =nv(a.rDis);     // EUR/kg disinfectant
+
+  let costCaustic=0, costAcid=0, costDis=0, costWater=0, costEnergy=0;
+  a.tanks.forEach(t=>{
+    const sv=calcSav(t.cTot,t.pTot);
+    const yr=nv(t.cipYr);
+    costCaustic += sv.caustic * yr * rC32;
+    costAcid    += sv.acid    * yr * rAcid;
+    costDis     += sv.dis     * yr * rDis;
+    costWater   += sv.water   * yr * 0.1 * rW;  // hl→m³
+    costEnergy  += sv.energy  * yr * rE;
+  });
+  const total = costCaustic + costAcid + costDis + costWater + costEnergy;
+  const exRate= nv(a.exchange);
+  const cur   = a.currency||'EUR';
+  const totalLocal = exRate>0 ? total*exRate : null;
+  return { costCaustic, costAcid, costDis, costWater, costEnergy, total, totalLocal, cur, exRate };
+}
+
 // ══════════════════════════════════════════════════════════════════
 // 🔐 AES-GCM 256-bit Encryption (Web Crypto API)
 // Dữ liệu lưu trong localStorage được mã hóa hoàn toàn.
-// Key được dẫn xuất từ device fingerprint + salt bằng PBKDF2.
+// Key được dẫn xuất từ device fingerprint + salt cố định bằng PBKDF2.
 // ══════════════════════════════════════════════════════════════════
 const CRYPTO = (() => {
   const STORE_KEY = 'kersia_v3_enc';
@@ -822,7 +856,7 @@ function readForm(){
 
 async function saveAudit(){
   readForm();
-  if(!cur.brewery){ document.getElementById('f-brewery').focus(); toast('Vui lòng nhập tên breweries'); return; }
+  if(!cur.brewery){ document.getElementById('f-brewery').focus(); toast('Please enter brewery name'); return; }
   const idx=audits.findIndex(a=>a.id===cur.id);
   if(idx>=0) audits[idx]=cur; else audits.push(cur);
   await persist();
@@ -959,7 +993,7 @@ function cipHtml(i, mode){
          f('1.1 Step time','wp1t',d.wp1t,'min'),
          f('1.1 Flow rate','wp1f',d.wp1f,'hl/h'),
          f('1.1 Step volume','wp1v',d.wp1v,'hl'))}
-    ${f4(f('1.2 Rinsing intervals','wp2i',d.wp2i,'times'),
+    ${f4(f('1.2 Rinsing intervals','wp2i',d.wp2i,'lần'),
          f('1.2 Step time','wp2t',d.wp2t,'min'),
          f('1.2 Flow rate','wp2f',d.wp2f,'hl/h'),
          f('1.2 Step volume','wp2v',d.wp2v,'hl'))}
@@ -976,7 +1010,7 @@ function cipHtml(i, mode){
          f('Flow rate','cp2f',d.cp2f,'hl/h'),
          f('Step volume','cp2v',d.cp2v,'hl'),EMPTY)}
     ${sub('2.3 Caustic circulation rinsing')}
-    ${f4(f('Circulation intervals','cp3i',d.cp3i,'times'),
+    ${f4(f('Circulation intervals','cp3i',d.cp3i,'lần'),
          f('Step time','cp3t',d.cp3t,'min'),
          f('Flow rate','cp3f',d.cp3f,'hl/h'),
          f('Step volume','cp3v',d.cp3v,'hl'))}
@@ -1000,7 +1034,7 @@ function cipHtml(i, mode){
          f('Flow rate','iw1f',d.iw1f,'hl/h'),
          f('Step volume','iw1v',d.iw1v,'hl'),EMPTY)}
     ${sub('2b.2 Water rinsing')}
-    ${f4(f('Rinsing intervals','iw2i',d.iw2i,'times'),
+    ${f4(f('Rinsing intervals','iw2i',d.iw2i,'lần'),
          f('Step time','iw2t',d.iw2t,'min'),
          f('Flow rate','iw2f',d.iw2f,'hl/h'),
          f('Step volume','iw2v',d.iw2v,'hl'))}
@@ -1019,7 +1053,7 @@ function cipHtml(i, mode){
     ${f4(f('Step time','ap2t',d.ap2t,'min'),
          f('Flow rate','ap2f',d.ap2f,'hl/h'),EMPTY,EMPTY)}
     ${sub('3.3 Acid circulation rinsing')}
-    ${f4(f('Circulation intervals','ap3i',d.ap3i,'times'),
+    ${f4(f('Circulation intervals','ap3i',d.ap3i,'lần'),
          f('Step time','ap3t',d.ap3t,'min'),
          f('Flow rate','ap3f',d.ap3f,'hl/h'),
          f('Rest time','ap3r',d.ap3r,'min'))}
@@ -1032,7 +1066,7 @@ function cipHtml(i, mode){
     ${f4(f('4.1 Step time','iw3t',d.iw3t,'min'),
          f('4.1 Flow rate','iw3f',d.iw3f,'hl/h'),
          f('4.1 Step volume','iw3v',d.iw3v,'hl'),EMPTY)}
-    ${f4(f('4.2 Rinsing intervals','iw4i',d.iw4i,'times'),
+    ${f4(f('4.2 Rinsing intervals','iw4i',d.iw4i,'lần'),
          f('4.2 Step time','iw4t',d.iw4t,'min'),
          f('4.2 Flow rate','iw4f',d.iw4f,'hl/h'),
          f('4.2 Step volume','iw4v',d.iw4v,'hl'))}
@@ -1049,7 +1083,7 @@ function cipHtml(i, mode){
          f('Flow rate','dp1f',d.dp1f,'hl/h'),
          f('Step volume','dp1v',d.dp1v,'hl'),EMPTY)}
     ${sub('5.2 Disinfectant circulation')}
-    ${f4(f('Circulation intervals','dp2i',d.dp2i,'times'),
+    ${f4(f('Circulation intervals','dp2i',d.dp2i,'lần'),
          f('Step time','dp2t',d.dp2t,'min'),
          f('Flow rate','dp2f',d.dp2f,'hl/h'),
          f('Step volume','dp2v',d.dp2v,'hl'))}
@@ -1062,7 +1096,7 @@ function cipHtml(i, mode){
     ${f4(f('6.1 Step time','fw1t',d.fw1t,'min'),
          f('6.1 Flow rate','fw1f',d.fw1f,'hl/h'),
          f('6.1 Step volume','fw1v',d.fw1v,'hl'),EMPTY)}
-    ${f4(f('6.2 Rinsing intervals','fw2i',d.fw2i,'times'),
+    ${f4(f('6.2 Rinsing intervals','fw2i',d.fw2i,'lần'),
          f('6.2 Step time','fw2t',d.fw2t,'min'),
          f('6.2 Flow rate','fw2f',d.fw2f,'hl/h'),
          f('6.2 Step volume','fw2v',d.fw2v,'hl'))}
@@ -1079,7 +1113,7 @@ function tankFormHtml(i){
       <div class="tank-badge">T${i+1}</div>
       <div class="tank-hd-info">
         <div class="tank-hd-title" id="tt-${i}">${esc(t.tankType)||'Tank '+(i+1)}</div>
-        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} times CIP/year</div>
+        <div class="tank-hd-sub">${esc(t.numT||'?')} tank · ${esc(t.grossV||'?')} hl · ${esc(t.cipYr||'?')} lần CIP/năm</div>
       </div>
       <button class="btn btn-dan btn-sm" onclick="removeTank(${i})"><i class="ti ti-trash"></i> Remove</button>
     </div>
@@ -1138,7 +1172,7 @@ function tankFormHtml(i){
       <div class="gc4 mb12">
         <div class="f"><label>Proposed caustic concentration <span class="u">(%w/v)</span></label>
           <input type="number" step="any" id="${T}propCausticConc" value="${esc(t.propCausticConc||'')}" placeholder="0"></div>
-        <div class="f"><label>Proposed acid concentration <span class="u">(%v/v)</span></label>
+        <div class="f"><label>Nồng độ Proposed acid &amp; disinfectant <span class="u">(%v/v)</span></label>
           <input type="number" step="any" id="${T}propAcidDisConc" value="${esc(t.propAcidDisConc||'')}" placeholder="0"></div>
         <div class="f"><label>Proposed disinfectant concentration <span class="u">(%v/v)</span></label>
           <input type="number" step="any" id="${T}propDisConc" value="${esc(t.propDisConc||'')}" placeholder="0"></div>
@@ -1159,7 +1193,7 @@ function tankFormHtml(i){
       <div id="cp-c-${i}" class="cip-pane on">${cipHtml(i,'curr')}</div>
       <div id="cp-p-${i}" class="cip-pane">${cipHtml(i,'prop')}</div>
 
-      <!-- TỔNG HỢP TIÊU THỤ / 1 times CIP -->
+      <!-- TỔNG HỢP TIÊU THỤ / 1 LẦN CIP -->
       <div class="card-hd mt16"><i class="ti ti-calculator"></i>Total consumption / CIP</div>
       <div class="totals-row">
         <div class="tot-box tc">
@@ -1227,12 +1261,25 @@ function renderList(){
     return `<div class="chip"><span class="text-gray">${lbl}:</span>
       <span class="${cls}">${ar}${Math.abs(v).toFixed(1)} ${u}</span></div>`;
   };
+  const chipCost=(cs)=>{
+    if(!cs.total && cs.total!==0) return '';
+    const fmt=v=>Math.abs(v)>=1000?Math.round(Math.abs(v)).toLocaleString():Math.abs(v).toFixed(0);
+    const cls=cs.total>0?'sv-pos':cs.total<0?'sv-neg':'sv-zero';
+    const ar=cs.total>0?'▼ ':cs.total<0?'▲ ':'';
+    let txt=`${ar}EUR ${fmt(cs.total)}/year`;
+    if(cs.totalLocal!==null) txt+=` ≈ ${cs.cur} ${fmt(cs.totalLocal)}/year`;
+    return `<div class="chip" style="background:var(--green-lt);border-color:var(--green)">
+      <i class="ti ti-coin" style="color:var(--green)"></i>
+      <span class="text-gray">Cost saving:</span>
+      <span class="${cls}" style="font-size:15px">${txt}</span></div>`;
+  };
 
   cards.innerHTML=audits.slice().reverse().map(a=>{
     const c=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0);
     const w=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water  *nv(t.cipYr),0);
     const e=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy *nv(t.cipYr),0);
     const tm=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).time  *nv(t.cipYr),0);
+    const cs=calcCostSaving(a);
     return `<div class="card">
       <div class="row-bw mb8">
         <div>
@@ -1251,6 +1298,7 @@ function renderList(){
       <div class="sav-strip">
         ${chip('NaOH',c,'kg/year')}${chip('Water',w,'hl/year')}
         ${chip('Electricity',e,'KWh/year')}${chip('Time',tm,'h/year')}
+        ${chipCost(cs)}
       </div>
     </div>`;
   }).join('');
@@ -1271,34 +1319,41 @@ function renderDash(){
 
   document.getElementById('stat-grid').innerHTML=`
     <div class="stat-card"><div class="stat-lbl">Total audits</div><div class="stat-val text-green">${audits.length}</div><div class="stat-unit">breweries</div></div>
-    <div class="stat-card"><div class="stat-lbl">Tank CIP</div><div class="stat-val text-blue">${tTk}</div><div class="stat-unit">systems</div></div>
+    <div class="stat-card"><div class="stat-lbl">Tank systems</div><div class="stat-val text-blue">${tTk}</div><div class="stat-unit">systems</div></div>
     <div class="stat-card"><div class="stat-lbl">NaOH saving</div><div class="stat-val text-green">${fmtN(tC,0)}</div><div class="stat-unit">kg/year</div></div>
     <div class="stat-card"><div class="stat-lbl">Water saving</div><div class="stat-val text-blue">${fmtN(tW,0)}</div><div class="stat-unit">hl/year</div></div>
     <div class="stat-card"><div class="stat-lbl">Electricity saving</div><div class="stat-val" style="color:var(--amber)">${fmtN(tE,0)}</div><div class="stat-unit">KWh/year</div></div>
     <div class="stat-card"><div class="stat-lbl">Time saving</div><div class="stat-val" style="color:var(--purple)">${fmtN(tT,1)}</div><div class="stat-unit">h/year</div></div>`;
 
-  const labels=audits.map(a=>esc(a.brewery||'Audit'));
+  const labels=audits.map(a=>String(a.brewery||'Audit'));
   const dC=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0));
   const dW=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water  *nv(t.cipYr),0));
+  const dA=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).acid   *nv(t.cipYr),0));
+  const dD=audits.map(a=>a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).dis    *nv(t.cipYr),0));
+
+  const chartOpts=(color,label)=>({
+    type:'bar',
+    data:{labels,datasets:[{label,data:null,
+      backgroundColor:color+'b3',borderColor:color,borderWidth:1.5,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}
+  });
 
   if(chC) chC.destroy();
   if(chW) chW.destroy();
-  chC=new Chart(document.getElementById('ch-caustic'),{
-    type:'bar',
-    data:{labels,datasets:[{label:'NaOH (kg/year)',data:dC,
-      backgroundColor:'rgba(15,110,86,.72)',borderColor:'#0F6E56',borderWidth:1.5,borderRadius:5}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}
-  });
-  chW=new Chart(document.getElementById('ch-water'),{
-    type:'bar',
-    data:{labels,datasets:[{label:'Water (hl/year)',data:dW,
-      backgroundColor:'rgba(26,111,191,.70)',borderColor:'#1A6FBF',borderWidth:1.5,borderRadius:5}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}
-  });
+  if(chA) chA.destroy();
+  if(chD) chD.destroy();
+
+  const optC=chartOpts('#0F6E56','NaOH (kg/year)');   optC.data.datasets[0].data=dC;
+  const optW=chartOpts('#1A6FBF','Water (hl/year)');   optW.data.datasets[0].data=dW;
+  const optA=chartOpts('#D97706','Acid (kg/year)');    optA.data.datasets[0].data=dA;
+  const optDis=chartOpts('#7C3AED','Disinfectant (kg/year)'); optDis.data.datasets[0].data=dD;
+
+  chC  = new Chart(document.getElementById('ch-caustic'), optC);
+  chW  = new Chart(document.getElementById('ch-water'),   optW);
+  chA  = new Chart(document.getElementById('ch-acid'),    optA);
+  chD  = new Chart(document.getElementById('ch-dis'),     optDis);
 
   document.getElementById('dash-tbody').innerHTML=audits.slice().reverse().map(a=>{
     const c=a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0);
@@ -1307,7 +1362,7 @@ function renderDash(){
       <td><span class="fw7 text-green">${esc(a.brewery||'–')}</span></td>
       <td class="text-gray">${esc(a.date||'–')}</td>
       <td>${esc(a.capacity||'–')}${a.capacity?' hl':''}</td>
-      <td><span class="badge bg-green">${a.tanks.length} </span></td>
+      <td><span class="badge bg-green">${a.tanks.length} hệ</span></td>
       <td style="color:${c>=0?'var(--green)':'var(--red)'};font-weight:700">
         ${c>=0?'▼ ':'▲ '}${Math.abs(c).toFixed(0)} kg</td>
       <td style="color:${w>=0?'var(--green)':'var(--red)'};font-weight:700">
@@ -1329,20 +1384,97 @@ function renderView(){
     ${u?`<div class="kv-u">${u}</div>`:''}
   </div>`;
 
+  // Cost saving calculation
+  const cs=calcCostSaving(a);
+  const fmtEUR=v=>v===0?'–':(v>0?'▼ ':'▲ ')+'EUR '+Math.abs(v).toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})+'/year';
+  const fmtLoc=v=>{
+    if(cs.exRate<=0||v===0) return '–';
+    const loc=v*cs.exRate;
+    return (v>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(loc).toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0})+'/year';
+  };
+  const colCost=v=>v>0?'var(--green)':v<0?'var(--red)':'var(--gray-3)';
+  const hasRates=(nv(a.rWater)||nv(a.rEle)||nv(a.rC32)||nv(a.rAcid)||nv(a.rDis));
+  const showLocal=cs.exRate>0&&cs.cur!=='EUR';
+
+  const costTableHtml=hasRates?`
+  <div class="card" style="border:2px solid var(--green)">
+    <div class="card-hd" style="font-size:14px"><i class="ti ti-coins"></i>Cost Savings (EUR/year)</div>
+    <table class="tbl">
+      <thead><tr>
+        <th>Item</th>
+        <th style="text-align:right">Unit rate</th>
+        <th style="text-align:right">Saving/year</th>
+        <th style="text-align:right">Cost saving EUR/year</th>
+        ${showLocal?`<th style="text-align:right">Cost saving ${esc(cs.cur)}/year</th>`:''}
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="fw7">Caustic 32%</td>
+          <td style="text-align:right">${nv(a.rC32)?'EUR '+nv(a.rC32)+' /kg':'–'}</td>
+          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv(t.cipYr),0),1)} kg</td>
+          <td style="text-align:right;font-weight:700;color:${colCost(cs.costCaustic)}">${fmtEUR(cs.costCaustic)}</td>
+          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costCaustic)}">${fmtLoc(cs.costCaustic)}</td>`:''}
+        </tr>
+        <tr>
+          <td class="fw7">Acid</td>
+          <td style="text-align:right">${nv(a.rAcid)?'EUR '+nv(a.rAcid)+' /kg':'–'}</td>
+          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).acid*nv(t.cipYr),0),1)} kg</td>
+          <td style="text-align:right;font-weight:700;color:${colCost(cs.costAcid)}">${fmtEUR(cs.costAcid)}</td>
+          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costAcid)}">${fmtLoc(cs.costAcid)}</td>`:''}
+        </tr>
+        <tr>
+          <td class="fw7">Disinfectant</td>
+          <td style="text-align:right">${nv(a.rDis)?'EUR '+nv(a.rDis)+' /kg':'–'}</td>
+          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).dis*nv(t.cipYr),0),1)} kg</td>
+          <td style="text-align:right;font-weight:700;color:${colCost(cs.costDis)}">${fmtEUR(cs.costDis)}</td>
+          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costDis)}">${fmtLoc(cs.costDis)}</td>`:''}
+        </tr>
+        <tr>
+          <td class="fw7">Water</td>
+          <td style="text-align:right">${nv(a.rWater)?'EUR '+nv(a.rWater)+' /m³':'–'}</td>
+          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water*nv(t.cipYr),0),1)} hl</td>
+          <td style="text-align:right;font-weight:700;color:${colCost(cs.costWater)}">${fmtEUR(cs.costWater)}</td>
+          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costWater)}">${fmtLoc(cs.costWater)}</td>`:''}
+        </tr>
+        <tr>
+          <td class="fw7">Electricity</td>
+          <td style="text-align:right">${nv(a.rEle)?'EUR '+nv(a.rEle)+' /kWh':'–'}</td>
+          <td style="text-align:right">${fmtN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy*nv(t.cipYr),0),1)} kWh</td>
+          <td style="text-align:right;font-weight:700;color:${colCost(cs.costEnergy)}">${fmtEUR(cs.costEnergy)}</td>
+          ${showLocal?`<td style="text-align:right;font-weight:700;color:${colCost(cs.costEnergy)}">${fmtLoc(cs.costEnergy)}</td>`:''}
+        </tr>
+        <tr style="background:var(--green-lt)">
+          <td class="fw7" colspan="3" style="font-size:15px;color:var(--green)">TOTAL COST SAVING / YEAR</td>
+          <td style="text-align:right;font-size:17px;font-weight:800;color:${colCost(cs.total)}">${fmtEUR(cs.total)}</td>
+          ${showLocal?`<td style="text-align:right;font-size:17px;font-weight:800;color:${colCost(cs.total)}">${fmtLoc(cs.total)}</td>`:''}
+        </tr>
+      </tbody>
+    </table>
+    ${showLocal?`<div style="font-size:12px;color:var(--gray-3);margin-top:8px">
+      Exchange rate: 1 EUR = ${cs.exRate.toLocaleString()} ${cs.cur}</div>`:''}
+  </div>`:'';
+
   const tankHtml=a.tanks.map((t,i)=>{
     const sv=calcSav(t.cTot,t.pTot);
     const yr=k=>(sv[k]*nv(t.cipYr)).toFixed(1);
-    const row=(lbl,ck,unit)=>{
+    // per-tank cost row
+    const costRow=(lbl,ck,unit,rate,rUnit)=>{
       const cv=nv(t.cTot[ck]),pv=nv(t.pTot[ck]),d=cv-pv;
       const yv=parseFloat(yr(ck));
       const col=d>0?'var(--green)':d<0?'var(--red)':'var(--gray-3)';
       const colY=yv>0?'var(--green)':yv<0?'var(--red)':'var(--gray-3)';
+      // cost: water: hl→m³ ×0.1; others direct
+      const convF=ck==='water'?0.1:1;
+      const costYr=rate? yv*convF*rate : null;
+      const colC=costYr>0?'var(--green)':costYr<0?'var(--red)':'var(--gray-3)';
       return `<tr>
         <td class="fw7">${lbl}</td>
         <td style="text-align:right;color:var(--blue);font-weight:600">${fmtN(cv,2)} ${unit}</td>
         <td style="text-align:right;color:var(--green);font-weight:600">${fmtN(pv,2)} ${unit}</td>
         <td style="text-align:right;font-weight:700;color:${col}">${d>0?'▼ ':d<0?'▲ ':''}${Math.abs(d).toFixed(2)} ${unit}</td>
         <td style="text-align:right;font-weight:700;color:${colY}">${yv>0?'▼ ':yv<0?'▲ ':''}${Math.abs(yv)} ${unit}</td>
+        <td style="text-align:right;font-weight:700;color:${costYr!==null?colC:'var(--gray-4)'}">
+          ${costYr!==null&&costYr!==0?(costYr>0?'▼ ':'▲ ')+'EUR '+Math.abs(costYr).toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0}):'–'}</td>
       </tr>`;
     };
     return `<div class="card">
@@ -1360,14 +1492,15 @@ function renderView(){
           <th style="text-align:right">Kersia proposal / CIP</th>
           <th style="text-align:right">Saving / CIP</th>
           <th style="text-align:right">Saving / year</th>
+          <th style="text-align:right">Cost saving EUR/year</th>
         </tr></thead>
         <tbody>
-          ${row('Caustic 32% (kg)','caustic','kg')}
-          ${row('Acid (kg)','acid','kg')}
-          ${row('Disinfectant (kg)','dis','kg')}
-          ${row('Water (hl)','water','hl')}
-          ${row('Time (h)','time','h')}
-          ${row('Electricity   (KWh)','energy','KWh')}
+          ${costRow('Caustic 32% (kg)','caustic','kg',nv(a.rC32),'kg')}
+          ${costRow('Acid (kg)','acid','kg',nv(a.rAcid),'kg')}
+          ${costRow('Disinfectant (kg)','dis','kg',nv(a.rDis),'kg')}
+          ${costRow('Water (hl)','water','hl',nv(a.rWater),'m³')}
+          ${costRow('Time (h)','time','h',0,'')}
+          ${costRow('Electricity (KWh)','energy','KWh',nv(a.rEle),'kWh')}
         </tbody>
       </table>
     </div>`;
@@ -1387,17 +1520,20 @@ function renderView(){
     </div>
 
     <div class="card">
-      <div class="card-hd"><i class="ti ti-currency-dollar"></i>Utility Rates (${esc(a.currency||'EUR')})</div>
+      <div class="card-hd"><i class="ti ti-currency-dollar"></i>Utility Rates (EUR${showLocal?' → '+esc(cs.cur):''})</div>
       <div class="kv-grid">
-        ${kv('Water',a.rWater,'per m³')}
-        ${kv('Electricity',a.rEle,'per kWh')}
-        ${kv('Heat',a.rHeat,'per GJ')}
-        ${kv('NaOH 32%',a.rC32,'per kg')}
-        ${kv('NaOH 50%',a.rC50,'per kg')}
-        ${kv('Acid',a.rAcid,'per kg')}
-        ${kv(' Disinfectan',a.rDis,'per kg')}
-              </div>
+        ${kv('Water',a.rWater?'EUR '+a.rWater:'–','per m³')}
+        ${kv('Electricity',a.rEle?'EUR '+a.rEle:'–','per kWh')}
+        ${kv('Heat',a.rHeat?'EUR '+a.rHeat:'–','per GJ')}
+        ${kv('NaOH 32%',a.rC32?'EUR '+a.rC32:'–','per kg')}
+        ${kv('NaOH 50%',a.rC50?'EUR '+a.rC50:'–','per kg')}
+        ${kv('Acid',a.rAcid?'EUR '+a.rAcid:'–','per kg')}
+        ${kv('Disinfectant',a.rDis?'EUR '+a.rDis:'–','per kg')}
+        ${showLocal?kv('Exchange rate','1 EUR = '+cs.exRate.toLocaleString()+' '+cs.cur):''}
+      </div>
     </div>
+
+    ${costTableHtml}
 
     ${tankHtml}
 
@@ -1434,6 +1570,11 @@ function exportPDF(id){
   function newPage(){
     doc.addPage();
     y = 14;
+    // footer on every page
+    doc.setFontSize(8); doc.setTextColor(...GR3);
+    doc.text('Kersia Vietnam – CIP Audit & TCO Calculator', MARGIN, 290);
+    doc.text(`Page ${doc.internal.getNumberOfPages()}`, W-MARGIN, 290, {align:'right'});
+    doc.setTextColor(...GR1);
   }
 
   function checkY(need=20){
@@ -1450,10 +1591,7 @@ function exportPDF(id){
   doc.setTextColor(255,255,255);
   doc.setFontSize(20); doc.setFont('helvetica','bold');
   doc.text('KERSIA', MARGIN, 16);
-  doc.setFontSize(10); doc.text(
-  `CIP per year: ${t.cipYr||'–'} · Supply pump: ${t.supKw||'–'} KWh · Sprayball: ${t.sprayball||'–'}`,
-  MARGIN, y
-);
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
   doc.text('CIP Audit & TCO Calculator Report', MARGIN, 23);
 
   doc.setFontSize(9);
@@ -1483,19 +1621,23 @@ function exportPDF(id){
   const tW = a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water  *nv2(t.cipYr),0);
   const tE = a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy *nv2(t.cipYr),0);
   const tT = a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).time   *nv2(t.cipYr),0);
+  const cs = calcCostSaving(a);
+  const fmtMoney=v=>v===0?'–':(v>0?'▼ ':v<0?'▲ ':'')+' EUR '+Math.abs(v).toLocaleString('en',{minimumFractionDigits:0,maximumFractionDigits:0});
 
-  const cols4 = CW/4;
+  // 5 stats: add cost
+  const cols5 = CW/5;
   const stats=[
-    ['NaOH Saving', fN(tC,0)+' kg/year', GRN],
-    ['Water Saving', fN(tW,0)+' hl/year', BLU],
-    ['Electricity Saving', fN(tE,0)+' KWh/year', [184,114,8]],
-    ['Time Saving', fN(tT,1)+' h/year', [78,66,176]],
+    ['NaOH Saving', fN(tC,0)+' kg/yr', GRN],
+    ['Water Saving', fN(tW,0)+' hl/yr', BLU],
+    ['Electricity', fN(tE,0)+' KWh/yr', [184,114,8]],
+    ['Time Saving', fN(tT,1)+' h/yr', [78,66,176]],
+    ['Cost Saving', cs.total?'EUR '+Math.round(Math.abs(cs.total)).toLocaleString()+'/yr':'No rates', cs.total>0?[9,77,60]:[122,122,133]],
   ];
   stats.forEach((st,i)=>{
-    const sx = MARGIN + i*cols4 + 4;
-    doc.setFontSize(8); doc.setFont('helvetica','normal'); doc.setTextColor(...GR3);
+    const sx = MARGIN + i*cols5 + 3;
+    doc.setFontSize(7.5); doc.setFont('helvetica','normal'); doc.setTextColor(...GR3);
     doc.text(st[0], sx, y+10);
-    doc.setFontSize(14); doc.setFont('helvetica','bold'); doc.setTextColor(...st[2]);
+    doc.setFontSize(12); doc.setFont('helvetica','bold'); doc.setTextColor(...st[2]);
     doc.text(st[1], sx, y+22);
   });
   y += 48;
@@ -1589,6 +1731,80 @@ function exportPDF(id){
     y = doc.lastAutoTable.finalY + 10;
   });
 
+  // ── Cost Savings Table ──
+  if(cs.total!==0){
+    checkY(60);
+    doc.setFontSize(11); doc.setFont('helvetica','bold'); doc.setTextColor(...GRN);
+    doc.text('Cost Savings Summary', MARGIN, y); y+=2;
+    doc.setDrawColor(...GRN); doc.line(MARGIN, y, W-MARGIN, y); y+=4;
+
+    const costRows=[
+      ['Caustic 32%', nv2(a.rC32)?`EUR ${a.rC32} /kg`:'–',
+        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).caustic*nv2(t.cipYr),0),1)+' kg',
+        cs.costCaustic?fmtMoney(cs.costCaustic):'–',
+        cs.totalLocal&&cs.costCaustic?(cs.costCaustic>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costCaustic*cs.exRate)).toLocaleString():'–'],
+      ['Acid', nv2(a.rAcid)?`EUR ${a.rAcid} /kg`:'–',
+        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).acid*nv2(t.cipYr),0),1)+' kg',
+        cs.costAcid?fmtMoney(cs.costAcid):'–',
+        cs.totalLocal&&cs.costAcid?(cs.costAcid>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costAcid*cs.exRate)).toLocaleString():'–'],
+      ['Disinfectant', nv2(a.rDis)?`EUR ${a.rDis} /kg`:'–',
+        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).dis*nv2(t.cipYr),0),1)+' kg',
+        cs.costDis?fmtMoney(cs.costDis):'–',
+        cs.totalLocal&&cs.costDis?(cs.costDis>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costDis*cs.exRate)).toLocaleString():'–'],
+      ['Water', nv2(a.rWater)?`EUR ${a.rWater} /m³`:'–',
+        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).water*nv2(t.cipYr),0),1)+' hl',
+        cs.costWater?fmtMoney(cs.costWater):'–',
+        cs.totalLocal&&cs.costWater?(cs.costWater>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costWater*cs.exRate)).toLocaleString():'–'],
+      ['Electricity', nv2(a.rEle)?`EUR ${a.rEle} /kWh`:'–',
+        fN(a.tanks.reduce((s,t)=>s+calcSav(t.cTot,t.pTot).energy*nv2(t.cipYr),0),1)+' kWh',
+        cs.costEnergy?fmtMoney(cs.costEnergy):'–',
+        cs.totalLocal&&cs.costEnergy?(cs.costEnergy>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.costEnergy*cs.exRate)).toLocaleString():'–'],
+    ];
+
+    const totalRowEUR=(cs.total>0?'▼ ':'▲ ')+'EUR '+Math.abs(Math.round(cs.total)).toLocaleString()+' /year';
+    const totalRowLoc=cs.totalLocal?(cs.total>0?'▼ ':'▲ ')+cs.cur+' '+Math.abs(Math.round(cs.totalLocal)).toLocaleString()+' /year':'–';
+
+    const hasCurr=cs.exRate>0&&cs.cur!=='EUR';
+    const head=hasCurr
+      ? [['Item','Unit rate','Saving/year','EUR/year',cs.cur+'/year']]
+      : [['Item','Unit rate','Saving/year','EUR/year']];
+    const body=costRows.map(r=>hasCurr?r:r.slice(0,4));
+    body.push(hasCurr
+      ? ['TOTAL COST SAVING','','',totalRowEUR,totalRowLoc]
+      : ['TOTAL COST SAVING','','',totalRowEUR]);
+
+    doc.autoTable({
+      startY: y,
+      margin:{left:MARGIN,right:MARGIN},
+      head,
+      body,
+      styles:{fontSize:9,cellPadding:2.5},
+      headStyles:{fillColor:GRNDK,textColor:255,fontStyle:'bold',fontSize:9},
+      alternateRowStyles:{fillColor:[245,252,249]},
+      columnStyles:{
+        0:{fontStyle:'bold'},
+        1:{halign:'right',textColor:GR3},
+        2:{halign:'right'},
+        3:{halign:'right',fontStyle:'bold'},
+        4:{halign:'right',fontStyle:'bold'},
+      },
+      didParseCell(data){
+        const lastRow=data.table.body.length-1;
+        if(data.row.index===lastRow){
+          data.cell.styles.fillColor=[9,77,60];
+          data.cell.styles.textColor=[255,255,255];
+          data.cell.styles.fontStyle='bold';
+          data.cell.styles.fontSize=10;
+        } else if(data.section==='body'&&data.column.index>=3){
+          const txt=String(data.cell.raw||'');
+          if(txt.startsWith('▼')) data.cell.styles.textColor=GRN;
+          else if(txt.startsWith('▲')) data.cell.styles.textColor=[192,57,43];
+        }
+      }
+    });
+    y = doc.lastAutoTable.finalY + 8;
+  }
+
   // ── Notes ──
   if(a.notes){
     checkY(20);
@@ -1653,7 +1869,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // ── Đồng hồ thời gian thực ────────────────────────────────────────
-const DAYS_VI = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ year','Thứ sáu','Thứ bảy'];
+const DAYS_VI = ['Chủ nhật','Thứ hai','Thứ ba','Thứ tư','Thứ năm','Thứ sáu','Thứ bảy'];
 const MONTHS_VI = ['tháng 1','tháng 2','tháng 3','tháng 4','tháng 5','tháng 6',
                    'tháng 7','tháng 8','tháng 9','tháng 10','tháng 11','tháng 12'];
 function tickClock(){
